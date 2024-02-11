@@ -11,4 +11,4 @@ whether I intend to pursue game development/ similar projects.
 - As a user, I want to be able to add gold and items through killing enemies.
 - As a user, I want to be able to open my inventory to see all acquired items and gold.
 - As a user, I want to be able to purchase items with the gold I have earned.
-- As a user, I want to be able to fight different enemies each wave.
+- As a user, I want to be able to gain abilities through equipping items.
