@@ -1,5 +1,7 @@
 package model;
 
+import model.items.Item;
+
 public abstract class HeroClass {
     protected int health;
     protected int attack;
