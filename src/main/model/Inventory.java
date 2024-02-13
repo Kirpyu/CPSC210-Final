@@ -9,4 +9,12 @@ public class Inventory {
     private int gold;
     private ArrayList<Item> inventoryList;
 
+    public Inventory() {
+        inventoryList = new ArrayList<>();
+    }
+
+    public ArrayList<Item> getInventory() {
+        return inventoryList;
+    }
+
 }

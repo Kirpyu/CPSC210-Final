@@ -11,6 +11,7 @@ import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
+import model.Shop;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,17 +19,23 @@ import java.util.ArrayList;
 //RPG Game
 public class TerminalGame {
     private Screen screen;
+    // option can also be thought of the current cursor position
     private int option;
     private ArrayList<String> listOfOptions;
+    private String currentScreen;
+    private Shop shop;
 
+    //EFFECTS: Constructor
     public TerminalGame() {
+        listOfOptions = new ArrayList<>();
 
-        ArrayList<String> listOfOptions = new ArrayList<>();
+        listOfOptions.add("Right");
         listOfOptions.add("Up");
         listOfOptions.add("Down");
         listOfOptions.add("Left");
-        this.listOfOptions = listOfOptions;
 
+        currentScreen = "Options";
+        shop = new Shop();
     }
 
     // EFFECTS: starts the game
@@ -56,7 +63,6 @@ public class TerminalGame {
     private void handleUserInput() throws IOException {
         boolean keepGoing = true;
 
-        init();
 
         KeyStroke input;
 
@@ -87,25 +93,60 @@ public class TerminalGame {
 
             case Character:
                 if (type.getCharacter() == ' ') {
-                    System.out.println("worked");
                     //make this find cursor, then go to the page holding the right stuff
+                    //if current screen = blank, then do specific command
+                    if (currentScreen.equals("Options")) {
+                        System.out.println("Swapped");
+                        executeOption();
+                    } else if (currentScreen.equals("Shop")) {
+                        System.out.println("Swapped");
+                        executeShop();
+                    }
                 }
                 break;
         }
     }
 
-    // EFFECTS: render depending on the direction of button pressed
+    // EFFECTS: render depending on the direction of button pressed and
+    // changes spacebar key behavior depending on currentscreen
     private void render(String direction) throws IOException {
         screen.clear();
+        switch (currentScreen) {
+            case "Options":
+                drawArrow(direction, listOfOptions);
+                drawOptions(listOfOptions);
+                break;
 
-        drawArrow(direction, listOfOptions);
-        drawOptions(listOfOptions);
+            case "Shop":
+                drawArrow(direction, shop.getShopListNames());
+                drawOptions(shop.getShopListNames());
+                break;
+        }
+
 
         screen.refresh();
     }
 
-    // initializes stuff
-    private void init() {
+    // EFFECTS: finds cursors position, then executes whatever task is given
+    public void executeOption() throws IOException {
+        switch (option) {
+            case 1:
+                System.out.println("Cursor at 1");
+                currentScreen = "Shop";
+                render("up");
+                break;
+        }
+    }
+
+    // EFFECTS: finds cursors position, then executes whatever task is given
+    public void executeShop() throws IOException {
+        switch (option) {
+            case 5:
+                currentScreen = "Options";
+                option = 1;
+                render("up");
+                break;
+        }
 
     }
 
@@ -133,26 +174,11 @@ public class TerminalGame {
 
     // EFFECTS: displays all options
     private void drawOptions(ArrayList<String> options) {
-        // can use for loop here, where up down left are in an array
-        // can make an array become a parameter
-        System.out.println(options);
         for (int i = 0; i < options.size(); i++) {
             TextGraphics text = screen.newTextGraphics();
             text.setForegroundColor(TextColor.ANSI.WHITE);
             text.putString(2, i, options.get(i));
         }
-
-//        TextGraphics text = screen.newTextGraphics();
-//        text.setForegroundColor(TextColor.ANSI.WHITE);
-//        text.putString(2, 0, "Up");
-//
-//        text = screen.newTextGraphics();
-//        text.setForegroundColor(TextColor.ANSI.WHITE);
-//        text.putString(2, 1, "Down");
-//
-//        text = screen.newTextGraphics();
-//        text.setForegroundColor(TextColor.ANSI.WHITE);
-//        text.putString(2, 2, "Left");
     }
 
     //MODIFIES: this
@@ -167,5 +193,17 @@ public class TerminalGame {
                 .showDialog(endGui);
     }
 
+    //getters
+    public int getOption() {
+        return option;
+    }
 
+    //setters
+    public void setCurrentScreen(String currentScreen) {
+        this.currentScreen = currentScreen;
+    }
+
+    public void setOption(int option) {
+        this.option = option;
+    }
 }
