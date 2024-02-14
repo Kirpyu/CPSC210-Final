@@ -10,13 +10,22 @@ public class Inventory {
     private ArrayList<Item> inventoryList;
 
     public Inventory() {
+
         inventoryList = new ArrayList<>();
     }
 
     public void addInventory(Item item) {
-        inventoryList.add(item);
+        if (getInventoryNames().contains(item.getItemName())) {
+            for (Item i:inventoryList) {
+                if (i.getItemName().equals(item.getItemName())) {
+                    i.addLevel();
+                    break;
+                }
+            }
+        } else {
+            inventoryList.add(item);
+        }
     }
-
 
     public ArrayList<Item> getInventory() {
         return inventoryList;
@@ -31,4 +40,20 @@ public class Inventory {
         return tempList;
     }
 
+    public ArrayList<String> getAbilityNames() {
+        ArrayList<String> tempList = new ArrayList<>();
+        for (Item i: inventoryList) {
+            tempList.add(i.getAbilityName());
+        }
+        tempList.add("Exit");
+        return tempList;
+    }
+
+    public ArrayList<String> getInventoryLevels() {
+        ArrayList<String> tempList = new ArrayList<>();
+        for (Item i: inventoryList) {
+            tempList.add("Level " + i.getLevel());
+        }
+        return tempList;
+    }
 }

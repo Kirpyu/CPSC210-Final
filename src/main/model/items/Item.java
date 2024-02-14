@@ -5,6 +5,7 @@ public class Item {
     protected String abilityName;
     protected int damage;
     protected int level;
+    protected int cost;
 
     //getters
     public Item(String itemName, String abilityName, int level, int damage) {
@@ -12,10 +13,15 @@ public class Item {
         this.abilityName = abilityName;
         this.level = level;
         this.damage = damage;
+        this.cost = 0;
     }
 
     public int getDamage() {
         return damage;
+    }
+
+    public void addLevel() {
+        level += 1;
     }
 
     public int getLevel() {
@@ -28,6 +34,14 @@ public class Item {
 
     public String getItemName() {
         return itemName;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
+
+    public int getCost() {
+        return cost;
     }
 
     //setters

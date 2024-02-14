@@ -14,6 +14,7 @@ public class Shop {
     public Shop() {
         shopList = new ArrayList<>();
         itemList = new ItemList();
+
         displayItem();
 
     }
@@ -26,6 +27,15 @@ public class Shop {
         }
 
         return shopList;
+    }
+
+    public ArrayList<String> getShopListCosts() {
+        ArrayList<String> tempList = new ArrayList<>();
+        for (Item i : itemList.getListOfItems()) {
+            tempList.add(i.getCost() + "G");
+        }
+
+        return tempList;
     }
 
     //EFFECTS: returns all item names currently in the shop

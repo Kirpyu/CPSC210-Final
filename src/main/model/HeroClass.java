@@ -34,17 +34,21 @@ public abstract class HeroClass {
         boolean state = false;
         if (health <= 0) {
             state = true;
-            droppedItem();
+//            droppedItem();
             droppedGold();
         }
         return state;
     }
 
     //EFFECTS: returns amount of gold dropped by enemy
-    protected abstract int droppedGold();
+    public int droppedGold() {
+        return 0;
+    }
 
-    //EFFECTS: returns item dropped by enemy
-    protected abstract Item droppedItem();
+//    //EFFECTS: returns item dropped by enemy
+//    public void Item droppedItem() {
+//        return
+//    }
 
 
 }
