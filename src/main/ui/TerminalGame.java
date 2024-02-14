@@ -11,6 +11,7 @@ import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
+import model.Inventory;
 import model.Shop;
 
 import java.io.IOException;
@@ -24,18 +25,20 @@ public class TerminalGame {
     private ArrayList<String> listOfOptions;
     private String currentScreen;
     private Shop shop;
+    private Inventory inventory;
 
     //EFFECTS: Constructor
     public TerminalGame() {
         listOfOptions = new ArrayList<>();
 
-        listOfOptions.add("Right");
-        listOfOptions.add("Up");
-        listOfOptions.add("Down");
-        listOfOptions.add("Left");
+        listOfOptions.add("Fight");
+        listOfOptions.add("Inventory");
+        listOfOptions.add("Shop");
+        listOfOptions.add("Exit");
 
         currentScreen = "Options";
         shop = new Shop();
+        inventory = new Inventory();
     }
 
     // EFFECTS: starts the game
@@ -43,8 +46,6 @@ public class TerminalGame {
 
         screen = new DefaultTerminalFactory().createScreen();
         screen.startScreen();
-
-
         screen.setCursorPosition(new TerminalPosition(0, 0));
         screen.clear();
 
@@ -52,9 +53,6 @@ public class TerminalGame {
         render("up");
 
         screen.refresh();
-
-
-
         handleUserInput();
     }
 
@@ -62,8 +60,6 @@ public class TerminalGame {
     // EFFECTS: processes user input
     private void handleUserInput() throws IOException {
         boolean keepGoing = true;
-
-
         KeyStroke input;
 
         while (keepGoing) {
@@ -95,12 +91,16 @@ public class TerminalGame {
                 if (type.getCharacter() == ' ') {
                     //make this find cursor, then go to the page holding the right stuff
                     //if current screen = blank, then do specific command
-                    if (currentScreen.equals("Options")) {
-                        System.out.println("Swapped");
-                        executeOption();
-                    } else if (currentScreen.equals("Shop")) {
-                        System.out.println("Swapped");
-                        executeShop();
+                    switch (currentScreen) {
+                        case "Options":
+                            executeOption();
+                            break;
+                        case "Inventory":
+                            executeInventory();
+                            break;
+                        case "Shop":
+                            executeShop();
+                            break;
                     }
                 }
                 break;
@@ -117,37 +117,66 @@ public class TerminalGame {
                 drawOptions(listOfOptions);
                 break;
 
+            case "Fight":
+
+                break;
+
+            case "Inventory":
+                drawArrow(direction, inventory.getInventoryNames());
+                drawOptions(inventory.getInventoryNames());
+                break;
+
             case "Shop":
                 drawArrow(direction, shop.getShopListNames());
                 drawOptions(shop.getShopListNames());
                 break;
+
         }
 
 
         screen.refresh();
     }
 
+    // MODIFIES: currentScreen
     // EFFECTS: finds cursors position, then executes whatever task is given
     public void executeOption() throws IOException {
         switch (option) {
+            case 0:
+                swapScreen("Fight");
+                break;
             case 1:
-                System.out.println("Cursor at 1");
-                currentScreen = "Shop";
-                render("up");
+                swapScreen("Inventory");
+                break;
+            case 2:
+                swapScreen("Shop");
                 break;
         }
     }
 
+    // MODIFIES: currentScreen
+    // EFFECTS: changes the current screen to screen name, then refreshes the screen
+    public void swapScreen(String screenName) throws IOException {
+        currentScreen = screenName;
+        option = 1;
+        render("up");
+    }
+
+    // MODIFIES: currentScreen
     // EFFECTS: finds cursors position, then executes whatever task is given
     public void executeShop() throws IOException {
-        switch (option) {
-            case 5:
-                currentScreen = "Options";
-                option = 1;
-                render("up");
-                break;
+        if (option == shop.getShopList().size()) {
+            swapScreen("Options");
+        } else {
+            inventory.addInventory(shop.purchaseItem(option));
         }
+    }
 
+    public void executeInventory() throws IOException {
+        if (option == inventory.getInventory().size()) {
+            swapScreen("Options");
+        } else {
+            System.out.println("lol");
+        }
     }
 
     //EFFECTS: draws the pointer next to options
@@ -179,6 +208,8 @@ public class TerminalGame {
             text.setForegroundColor(TextColor.ANSI.WHITE);
             text.putString(2, i, options.get(i));
         }
+
+
     }
 
     //MODIFIES: this

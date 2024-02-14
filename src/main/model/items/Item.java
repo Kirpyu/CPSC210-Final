@@ -7,7 +7,11 @@ public class Item {
     protected int level;
 
     //getters
-    public Item() {
+    public Item(String itemName, String abilityName, int level, int damage) {
+        this.itemName = itemName;
+        this.abilityName = abilityName;
+        this.level = level;
+        this.damage = damage;
     }
 
     public int getDamage() {
@@ -30,6 +34,7 @@ public class Item {
     public void setAbilityName(String abilityName) {
         this.abilityName = abilityName;
     }
+
 
     public void setDamage(int damage) {
         this.damage = damage;
