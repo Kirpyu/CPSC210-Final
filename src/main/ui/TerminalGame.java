@@ -37,6 +37,7 @@ public class TerminalGame {
         listOfOptions.add("Attack");
         listOfOptions.add("Inventory");
         listOfOptions.add("Shop");
+        listOfOptions.add("Stats");
 
         currentScreen = "Options";
         player = new Player();
@@ -118,12 +119,17 @@ public class TerminalGame {
                 break;
             case "Attack":
                 executeAttack();
+                break;
+            case "Stats":
+                executeStats();
+                break;
         }
     }
 
     // MODIFIES: this
     // EFFECTS: render depending on the direction of button pressed and
     // changes space bar key behavior depending on current screen
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     private void render(String direction) throws IOException {
         screen.clear();
         switch (currentScreen) {
@@ -135,6 +141,7 @@ public class TerminalGame {
             case "Attack":
                 drawArrow(direction, enemyList.getEnemyNames());
                 drawOptions(enemyList.getEnemyNames());
+                drawMoreOptions(enemyList.getEnemiesHealth());
                 break;
 
             case "Inventory":
@@ -149,6 +156,10 @@ public class TerminalGame {
                 drawMoreOptions(shop.getShopListCosts());
                 break;
 
+            case "Stats":
+                drawArrow(direction, player.getStats());
+                drawOptions(player.getStats());
+                break;
         }
 
         drawDialogue(dialogue.displayDialogue());
@@ -169,6 +180,8 @@ public class TerminalGame {
             case 2:
                 swapScreen("Shop");
                 break;
+            case 3:
+                swapScreen("Stats");
         }
     }
 
@@ -209,11 +222,36 @@ public class TerminalGame {
         dialogue.addDialogue("You damaged " + targetEnemy.getName() + " for " + player.getDamage());
 
         if (targetEnemy.dead()) {
+            dialogue.addDialogue("You killed " + targetEnemy.getName());
             enemyList.removeEnemy(targetEnemy);
             inventory.addGold(targetEnemy.getGoldDropped());
             inventory.addInventory(targetEnemy.getItemDropped());
+            dialogue.addDialogue("You gained " + targetEnemy.getGoldDropped() + "G");
+            dialogue.addDialogue("You gained " + targetEnemy.getItemDropped().getItemName());
+        } else {
+            dialogue.addDialogue(targetEnemy.getName() + " has " + targetEnemy.getHealth() + " health left");
         }
 
+        if (enemyList.getEnemyList().isEmpty()) {
+            dialogue.addDialogue("You have killed all enemies");
+            dialogue.addDialogue("Shop has refreshed!");
+            dialogue.addDialogue("Next Enemy Wave Incoming");
+        } else {
+            attackPlayer(player);
+        }
+    }
+
+    public void attackPlayer(Player player) {
+        for (Enemy e: enemyList.getEnemyList()) {
+            player.damagePlayer(e.getAttack());
+            dialogue.addDialogue(e.getName() + " has hit you for " + e.getAttack() + "HP");
+        }
+
+        if (player.dead()) {
+            drawEndScreen();
+        } else {
+            dialogue.addDialogue("You have " + player.getCurrentHealth() + "HP left");
+        }
     }
 
     //MODIFIES: this
@@ -223,6 +261,12 @@ public class TerminalGame {
             swapScreen("Options");
         } else {
             System.out.println("lol");
+        }
+    }
+
+    public void executeStats() throws IOException {
+        if (option == player.getStats().size() - 1) {
+            swapScreen("Options");
         }
     }
 
@@ -270,7 +314,7 @@ public class TerminalGame {
         for (int i = 0; i < options.size(); i++) {
             TextGraphics text = screen.newTextGraphics();
             text.setForegroundColor(TextColor.ANSI.WHITE);
-            text.putString(0, 15, options.get(i));
+            text.putString(1, 10 + i, options.get(i));
         }
     }
 

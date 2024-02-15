@@ -5,7 +5,7 @@ import model.items.Shield;
 
 public class Paladin extends Enemy {
     public Paladin() {
-        super("Paladin", 5,5,5, new Shield());
+        super("Paladin", 10,1,5, new Shield());
     }
 
 

@@ -45,6 +45,16 @@ public class EnemyList {
         return tempList;
     }
 
+    public ArrayList<String> getEnemiesHealth() {
+        ArrayList<String> tempList = new ArrayList<>();
+
+        for (Enemy e: enemyList) {
+            tempList.add(e.getHealth() + "HP");
+        }
+
+        return tempList;
+    }
+
     //getter
     public ArrayList<Enemy> getEnemyList() {
         return enemyList;
