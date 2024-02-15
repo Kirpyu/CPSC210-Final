@@ -3,30 +3,19 @@ package model.items;
 import java.util.ArrayList;
 
 public class ItemList {
-    private ArrayList<Item> listOfItems;
-    private Item axe;
-    private Item dagger;
-    private Item shield;
-    private Item staff;
-    private Item sword;
+    private final ArrayList<Item> listOfItems;
 
-
+    //constructor
     public ItemList() {
         listOfItems = new ArrayList<>();
-
-        axe = new Axe();
-        dagger = new Dagger();
-        shield = new Shield();
-        staff = new Staff();
-        sword = new Sword();
-
-        listOfItems.add(axe);
-        listOfItems.add(dagger);
-        listOfItems.add(shield);
-        listOfItems.add(staff);
-        listOfItems.add(sword);
+        listOfItems.add(new Axe());
+        listOfItems.add(new Dagger());
+        listOfItems.add(new Shield());
+        listOfItems.add(new Staff());
+        listOfItems.add(new Sword());
     }
 
+    //EFFECTS: returns all list of items that exists
     public ArrayList<Item> getListOfItems() {
         return listOfItems;
     }

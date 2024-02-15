@@ -8,7 +8,7 @@ The project serves as a quick introduction to game development for me and will g
 whether I intend to pursue game development/ similar projects.
 
 ## **User Stories:**
-- As a user, I want to be able to add gold and items through killing enemies.
-- As a user, I want to be able to open my inventory to see all acquired items and gold.
-- As a user, I want to be able to purchase items with the gold I have earned.
-- As a user, I want to be able to gain abilities through equipping items.
+- As a user, I want to be able to add items to my inventory through a shop.
+- As a user, I want to be able to open my inventory to see all acquired items.
+- As a user, I want to be able to kill enemies and gain gold and items.
+- As a user, I want to be able to gain abilities through gaining items.

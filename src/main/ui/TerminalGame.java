@@ -12,6 +12,8 @@ import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import model.*;
+import model.enemy.Enemy;
+import model.enemy.EnemyList;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,12 +21,14 @@ import java.util.ArrayList;
 //RPG Game
 public class TerminalGame {
     private Screen screen;
-    // option can also be thought of the current cursor position
     private int option;
     private final ArrayList<String> listOfOptions;
     private String currentScreen;
     private final Shop shop;
+    private Player player;
     private final Inventory inventory;
+    private final EnemyList enemyList;
+    private Dialogue dialogue;
 
     //EFFECTS: Constructor
     public TerminalGame() {
@@ -35,10 +39,14 @@ public class TerminalGame {
         listOfOptions.add("Shop");
 
         currentScreen = "Options";
+        player = new Player();
         shop = new Shop();
         inventory = new Inventory();
+        enemyList = new EnemyList();
+        dialogue = new Dialogue(player, enemyList);
     }
 
+    // MODIFIES: this
     // EFFECTS: starts the game
     public void start() throws IOException {
 
@@ -48,13 +56,15 @@ public class TerminalGame {
         screen.clear();
 
         option = 1;
+
+        enemyList.createEnemies();
+        dialogue.start();
         render("up");
 
         screen.refresh();
         handleUserInput();
     }
 
-    // MODIFIES: this
     // EFFECTS: processes user input
     private void handleUserInput() throws IOException {
         boolean keepGoing = true;
@@ -94,6 +104,7 @@ public class TerminalGame {
         }
     }
 
+    // EFFECTS: executes command given depending on the current page
     public void executeCurrentScreen() throws IOException {
         switch (currentScreen) {
             case "Options":
@@ -110,8 +121,9 @@ public class TerminalGame {
         }
     }
 
+    // MODIFIES: this
     // EFFECTS: render depending on the direction of button pressed and
-    // changes spacebar key behavior depending on currentscreen
+    // changes space bar key behavior depending on current screen
     private void render(String direction) throws IOException {
         screen.clear();
         switch (currentScreen) {
@@ -121,8 +133,8 @@ public class TerminalGame {
                 break;
 
             case "Attack":
-                drawArrow(direction, inventory.getAbilityNames());
-                drawOptions(inventory.getAbilityNames());
+                drawArrow(direction, enemyList.getEnemyNames());
+                drawOptions(enemyList.getEnemyNames());
                 break;
 
             case "Inventory":
@@ -139,11 +151,12 @@ public class TerminalGame {
 
         }
 
+        drawDialogue(dialogue.displayDialogue());
 
         screen.refresh();
     }
 
-    // MODIFIES: currentScreen
+    // MODIFIES: this
     // EFFECTS: finds cursors position, then executes whatever task is given
     public void executeOption() throws IOException {
         switch (option) {
@@ -159,7 +172,7 @@ public class TerminalGame {
         }
     }
 
-    // MODIFIES: currentScreen
+    // MODIFIES: this
     // EFFECTS: changes the current screen to screen name, then refreshes the screen
     public void swapScreen(String screenName) throws IOException {
         currentScreen = screenName;
@@ -167,7 +180,7 @@ public class TerminalGame {
         render("up");
     }
 
-    // MODIFIES: currentScreen
+    // MODIFIES: this
     // EFFECTS: if the cursor hovers exit, then returns to option, else
     // adds item to inventory
     public void executeShop() throws IOException {
@@ -178,16 +191,35 @@ public class TerminalGame {
         }
     }
 
+    //MODIFIES: this
+    //EFFECTS: executes the attack if cursor does not hover exit
     public void executeAttack() throws IOException {
-        if (option == inventory.getInventory().size()) {
+        if (option == enemyList.getEnemyList().size()) {
             swapScreen("Options");
         } else {
-            System.out.println("lol");
+            attackEnemy(enemyList.getEnemy(option));
+            swapScreen("Options");
         }
     }
 
+    public void attackEnemy(Enemy targetEnemy) {
+        dialogue.resetDialogue();
+        player.damageEnemy(targetEnemy, player.getDamage());
+
+        dialogue.addDialogue("You damaged " + targetEnemy.getName() + " for " + player.getDamage());
+
+        if (targetEnemy.dead()) {
+            enemyList.removeEnemy(targetEnemy);
+            inventory.addGold(targetEnemy.getGoldDropped());
+            inventory.addInventory(targetEnemy.getItemDropped());
+        }
+
+    }
+
+    //MODIFIES: this
+    //EFFECTS: pressing exit exits the inventory
     public void executeInventory() throws IOException {
-        if (option == inventory.getInventory().size()) {
+        if (option == inventory.getInventory().size() + 1) {
             swapScreen("Options");
         } else {
             System.out.println("lol");
@@ -234,14 +266,23 @@ public class TerminalGame {
         }
     }
 
+    private void drawDialogue(ArrayList<String> options) {
+        for (int i = 0; i < options.size(); i++) {
+            TextGraphics text = screen.newTextGraphics();
+            text.setForegroundColor(TextColor.ANSI.WHITE);
+            text.putString(0, 15, options.get(i));
+        }
+    }
+
     //MODIFIES: this
     //EFFECTS: displays end screen
     private void drawEndScreen() {
-        WindowBasedTextGUI endGui = new MultiWindowTextGUI(screen);
+        WindowBasedTextGUI endGui = new MultiWindowTextGUI(screen, TextColor.ANSI.BLACK);
 
         new MessageDialogBuilder()
-                .setTitle("Done")
+                .setTitle("You Died")
                 .addButton(MessageDialogButton.Close)
+                .setText("Get Good")
                 .build()
                 .showDialog(endGui);
     }

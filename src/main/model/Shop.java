@@ -4,11 +4,10 @@ import model.items.Item;
 import model.items.ItemList;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class Shop {
-    private ArrayList<Item> shopList;
-    private ItemList itemList;
+    private final ArrayList<Item> shopList;
+    private final ItemList itemList;
 
     //constructor
     public Shop() {
@@ -19,7 +18,7 @@ public class Shop {
 
     }
 
-    //MODIFIES: shopList
+    //MODIFIES: this
     //EFFECTS: adds items to the shop
     public ArrayList<Item> displayItem() {
         for (Item i : itemList.getListOfItems()) {
@@ -29,6 +28,7 @@ public class Shop {
         return shopList;
     }
 
+    //EFFECTS: returns a list of all the costs of items in the shop
     public ArrayList<String> getShopListCosts() {
         ArrayList<String> tempList = new ArrayList<>();
         for (Item i : itemList.getListOfItems()) {
@@ -49,6 +49,7 @@ public class Shop {
         return tempList;
     }
 
+    //EFFECTS: checks if gold is sufficient to purchase item
     public boolean canPurchase() {
         return false;
     }
