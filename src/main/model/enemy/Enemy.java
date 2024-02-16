@@ -1,6 +1,5 @@
 package model.enemy;
 
-import model.Player;
 import model.items.Item;
 
 public abstract class Enemy {
@@ -10,6 +9,7 @@ public abstract class Enemy {
     protected int goldDropped;
     protected Item itemDropped;
 
+    // constructor
     public Enemy(String name, int health, int attack, int goldDropped, Item itemDropped) {
         this.name = name;
         this.health = health;
@@ -18,31 +18,35 @@ public abstract class Enemy {
         this.itemDropped = itemDropped;
     }
 
-    //randomizes gold dropped, attack, and health
-    public void randomizeStats(int wave) {
+//    //randomizes gold dropped, attack, and health
+//    public void randomizeStats(int wave) {
+//
+//    }
 
-    }
-
+    //EFFECTS: returns the line enemies state when they attack
     public abstract String attackLine();
 
+    //EFFECTS: returns the line enemies state when they die
     public abstract String deathLine();
 
 
 
     //EFFECTS: false if hero is alive, else drops gold and item if hero is dead
     public boolean dead() {
-        boolean state = false;
-        if (health <= 0) {
-            state = true;
-
-            getGoldDropped();
-        }
-        return state;
+        return health <= 0;
     }
 
     //setters
     public void setHealth(int health) {
         this.health = health;
+    }
+
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
+
+    public void setGoldDropped(int goldDropped) {
+        this.goldDropped = goldDropped;
     }
 
     // getters

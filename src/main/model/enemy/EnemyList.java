@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class EnemyList {
     private ArrayList<Enemy> currentEnemies;
-    private ArrayList<String> listOfEnemies;
+    private final ArrayList<String> listOfEnemies;
 
     //constructor
     public EnemyList() {
@@ -62,6 +62,7 @@ public class EnemyList {
         return tempList;
     }
 
+    // EFFECTS: returns all enemies current hp with HP added to the end
     public ArrayList<String> getEnemiesHealth() {
         ArrayList<String> tempList = new ArrayList<>();
 

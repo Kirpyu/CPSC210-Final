@@ -38,6 +38,9 @@ class EnemyListTest {
         assertEquals("Warrior", enemyList.getCurrentEnemy(3).getName());
         enemyList.addEnemy("Berserker");
         assertEquals("Berserker", enemyList.getCurrentEnemy(4).getName());
+        assertEquals(5, enemyList.getCurrentEnemies().size());
+        enemyList.addEnemy("Villain");
+        assertEquals(5, enemyList.getCurrentEnemies().size());
     }
 
 

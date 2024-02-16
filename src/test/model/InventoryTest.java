@@ -29,10 +29,26 @@ class InventoryTest {
         inventory.addInventory(new Axe());
         assertEquals("Axe", inventory.getInventory().get(0).getItemName());
         assertEquals(1, inventory.getInventory().size());
+        assertEquals(1, inventory.getInventory().get(0).getLevel());
 
         inventory.addInventory(new Dagger());
         assertEquals("Dagger", inventory.getInventory().get(1).getItemName());
         assertEquals(2, inventory.getInventory().size());
+        assertEquals(1, inventory.getInventory().get(1).getLevel());
+
+        inventory.addInventory(new Dagger());
+        assertEquals("Dagger", inventory.getInventory().get(1).getItemName());
+        assertEquals(2, inventory.getInventory().size());
+        assertEquals(2, inventory.getInventory().get(1).getLevel());
+
+        inventory.addInventory(new Axe());
+        inventory.addInventory(new Axe());
+
+        assertEquals("Axe", inventory.getInventory().get(0).getItemName());
+        assertEquals(2, inventory.getInventory().size());
+        assertEquals(3, inventory.getInventory().get(0).getLevel());
+
+
     }
 
     @Test
