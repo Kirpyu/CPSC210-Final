@@ -29,6 +29,7 @@ public class Player {
         return currentHealth <= 0;
     }
 
+    //EFFECTS: returns stats of player with added dialogue
     public ArrayList<String> getStats() {
         ArrayList<String> tempList = new ArrayList<>();
         tempList.add("Health: " + currentHealth + "/" + maxHealth);
@@ -44,16 +45,43 @@ public class Player {
         return tempList;
     }
 
+    //MODIFIES: this
+    //EFFECTS: deducts specified integer from current health
     public void damagePlayer(int i) {
         currentHealth -= i;
     }
 
+    //getters
     public int getCurrentHealth() {
         return currentHealth;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public int getAttack() {
+        return attack;
     }
 
     public int getDamage() {
         return damage;
     }
 
+    public Item getEquippedItem() {
+        return equippedItem;
+    }
+
+    //setter
+    public void setEquippedItem(Item equippedItem) {
+        this.equippedItem = equippedItem;
+    }
+
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
 }
