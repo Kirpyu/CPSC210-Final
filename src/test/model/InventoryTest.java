@@ -28,6 +28,8 @@ class InventoryTest {
     public void addInventoryTest() {
         ArrayList<String> tempList = new ArrayList<>();
 
+        assertEquals(0, inventory.getInventory().size());
+
         inventory.addInventory(new Axe());
         assertEquals("Axe", inventory.getInventory().get(0).getItemName());
         assertEquals(1, inventory.getInventory().size());

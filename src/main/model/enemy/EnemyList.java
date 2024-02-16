@@ -3,7 +3,7 @@ package model.enemy;
 import java.util.ArrayList;
 
 public class EnemyList {
-    private ArrayList<Enemy> currentEnemies; // holds enemies currently in the wave
+    private final ArrayList<Enemy> currentEnemies; // holds enemies currently in the wave
     private final ArrayList<String> listOfEnemies; // holds all enemies that exist
 
     //Adds a string of all enemies that exists to listOfEnemies
