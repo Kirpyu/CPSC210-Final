@@ -57,7 +57,6 @@ public class Inventory {
         for (Item i: inventoryList) {
             tempList.add(i.getAbilityName());
         }
-        tempList.add("Exit");
         return tempList;
     }
 

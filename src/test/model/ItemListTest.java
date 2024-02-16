@@ -29,4 +29,13 @@ class ItemListTest {
         assertEquals("Staff", itemList.getItem(3).getItemName());
         assertEquals("Sword", itemList.getItem(4).getItemName());
     }
+
+    @Test
+    public void getListOfItemsTest() {
+        assertEquals("Axe", itemList.getListOfItems().get(0).getItemName());
+        assertEquals("Dagger", itemList.getListOfItems().get(1).getItemName());
+        assertEquals("Shield", itemList.getListOfItems().get(2).getItemName());
+        assertEquals("Staff", itemList.getListOfItems().get(3).getItemName());
+        assertEquals("Sword", itemList.getListOfItems().get(4).getItemName());
+    }
 }

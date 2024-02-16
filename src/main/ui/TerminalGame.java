@@ -31,6 +31,7 @@ public class TerminalGame {
 
     private InventoryUI inventoryUI;
     private ShopUI shopUI;
+    private AttackUI attackUI;
 
 
     //EFFECTS: Constructor
@@ -55,6 +56,7 @@ public class TerminalGame {
         dialogue = new Dialogue(player, enemyList);
         inventoryUI = new InventoryUI(inventory, this);
         shopUI = new ShopUI(shop, inventory, dialogue, this);
+        attackUI = new AttackUI(player, enemyList, inventory, dialogue, this);
     }
 
     // MODIFIES: this
@@ -68,7 +70,7 @@ public class TerminalGame {
 
         option = 1;
 
-        enemyList.createEnemies(2);
+        attackUI.createEnemies(2);
         dialogue.start();
         render("up");
 
@@ -130,7 +132,7 @@ public class TerminalGame {
                 shopUI.executeShop(option);
                 break;
             case "Attack":
-                executeAttack();
+                attackUI.executeAttack(option);
                 break;
             case "Stats":
                 executeStats();
@@ -201,65 +203,7 @@ public class TerminalGame {
     }
 
     //MODIFIES: this
-    //EFFECTS: executes the attack if cursor does not hover exit
-    public void executeAttack() throws IOException {
-        if (option == enemyList.getEnemyList().size()) {
-            swapScreen("Options");
-        } else {
-            attackEnemy(enemyList.getEnemy(option));
-            swapScreen("Options");
-        }
-    }
-
-    //MODIFIES: this, targetEnemy
-    //EFFECTS: player attacks the enemy depending on their damage, then creates dialogue depending on
-    // whether the enemy dies. If the enemylist is empty after attacking, then the next waves ensues, otherwise
-    // the remaining enemies will attack the player.
-    public void attackEnemy(Enemy targetEnemy) {
-        dialogue.resetDialogue();
-        player.damageEnemy(targetEnemy, player.getDamage());
-
-        dialogue.addDialogue("You damaged " + targetEnemy.getName() + " for " + player.getDamage());
-
-        if (targetEnemy.dead()) {
-            dialogue.addDialogue(targetEnemy.deathLine());
-            enemyList.removeEnemy(targetEnemy);
-            inventory.addGold(targetEnemy.getGoldDropped());
-            inventory.addInventory(targetEnemy.getItemDropped());
-            dialogue.addDialogue("You gained " + targetEnemy.getGoldDropped() + "G");
-            dialogue.addDialogue("You gained " + targetEnemy.getItemDropped().getItemName());
-        } else {
-            dialogue.addDialogue(targetEnemy.getName() + " has " + targetEnemy.getHealth() + " health left");
-        }
-
-        if (enemyList.getEnemyList().isEmpty()) {
-            dialogue.addDialogue("You have killed all enemies! Shop has refreshed");
-            dialogue.addDialogue("Next enemies have arrived!");
-            enemyList.createEnemies(2);
-        } else {
-            attackPlayer(player);
-        }
-    }
-
-    //MODIFIES: this, player
-    //EFFECTS: enemy attacks the players, then writes dialogue on the screen depending on if
-    // the player is dead
-    public void attackPlayer(Player player) {
-        for (Enemy e: enemyList.getEnemyList()) {
-            player.damagePlayer(e.getAttack());
-            dialogue.addDialogue(e.attackLine());
-        }
-
-        if (player.dead()) {
-            drawEndScreen();
-        } else {
-            dialogue.addDialogue("You have " + player.getCurrentHealth() + "HP left");
-        }
-    }
-
-    //MODIFIES: this
-    //EFFECTS: pressing exit exits the inventory
-
+    //EFFECTS: pressing exit exits the stats page
     public void executeStats() throws IOException {
         if (option == player.getStats().size() - 1) {
             swapScreen("Options");
@@ -268,7 +212,7 @@ public class TerminalGame {
 
     //MODIFIES: this
     //EFFECTS: draws the pointer next to options, then draws options afterwards
-    private void drawArrow(String direction, ArrayList<String> options) {
+    public void drawArrow(String direction, ArrayList<String> options) {
         TextGraphics text = screen.newTextGraphics();
         text.setForegroundColor(TextColor.ANSI.WHITE);
         switch (direction) {
@@ -292,7 +236,7 @@ public class TerminalGame {
 
     // MODIFIES: this
     // EFFECTS: displays all options
-    private void drawOptions(ArrayList<String> options) {
+    public void drawOptions(ArrayList<String> options) {
         for (int i = 0; i < options.size(); i++) {
             TextGraphics text = screen.newTextGraphics();
             text.setForegroundColor(TextColor.ANSI.WHITE);
@@ -302,7 +246,7 @@ public class TerminalGame {
 
     // MODIFIES: this
     // EFFECTS: displays all options
-    private void drawMoreOptions(ArrayList<String> options) {
+    public void drawMoreOptions(ArrayList<String> options) {
         for (int i = 0; i < options.size(); i++) {
             TextGraphics text = screen.newTextGraphics();
             text.setForegroundColor(TextColor.ANSI.WHITE);
@@ -312,7 +256,7 @@ public class TerminalGame {
 
     // MODIFIES: this
     // EFFECTS: draws dialogue at the bottom of the screen
-    private void drawDialogue(ArrayList<String> options) {
+    public void drawDialogue(ArrayList<String> options) {
         for (int i = 0; i < options.size(); i++) {
             TextGraphics text = screen.newTextGraphics();
             text.setForegroundColor(TextColor.ANSI.WHITE);
@@ -321,7 +265,7 @@ public class TerminalGame {
     }
 
     //EFFECTS: exits game
-    private void drawEndScreen() {
+    public void drawEndScreen() {
         System.exit(0);
     }
 

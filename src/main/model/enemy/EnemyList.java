@@ -1,7 +1,6 @@
 package model.enemy;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class EnemyList {
     private ArrayList<Enemy> currentEnemies;
@@ -19,31 +18,25 @@ public class EnemyList {
     }
 
     //MODIFIES: this
-    //EFFECTS: instantiates a certain amount of random enemies
-    public void createEnemies(int amount) {
-        for (int i = amount; i > 0; i--) {
-            Random random = new Random();
-            String randomEnemy = listOfEnemies.get(random.nextInt(5));
-
-            switch (randomEnemy) {
-                case "Paladin":
-                    currentEnemies.add(new Paladin());
-                    break;
-                case "Rogue":
-                    currentEnemies.add(new Rogue());
-                    break;
-                case "Mage":
-                    currentEnemies.add(new Mage());
-                    break;
-                case "Warrior":
-                    currentEnemies.add(new Warrior());
-                    break;
-                case "Berserker":
-                    currentEnemies.add(new Berserker());
-                    break;
-            }
+    //EFFECTS: instantiates a given enemy
+    public void addEnemy(String enemy) {
+        switch (enemy) {
+            case "Paladin":
+                currentEnemies.add(new Paladin());
+                break;
+            case "Rogue":
+                currentEnemies.add(new Rogue());
+                break;
+            case "Mage":
+                currentEnemies.add(new Mage());
+                break;
+            case "Warrior":
+                currentEnemies.add(new Warrior());
+                break;
+            case "Berserker":
+                currentEnemies.add(new Berserker());
+                break;
         }
-        randomizeEnemyStats();
     }
 
     //MODIFIES: this
@@ -53,13 +46,8 @@ public class EnemyList {
     }
 
     //EFFECTS: returns selected enemy
-    public Enemy getEnemy(int i) {
+    public Enemy getCurrentEnemy(int i) {
         return currentEnemies.get(i);
-    }
-
-    //EFFECTS: randomizes all enemy stats
-    public void randomizeEnemyStats() {
-
     }
 
     //EFFECTS: returns a list of string of all enemies
@@ -85,9 +73,15 @@ public class EnemyList {
     }
 
     //getter
-    public ArrayList<Enemy> getEnemyList() {
+    public ArrayList<Enemy> getCurrentEnemies() {
         return currentEnemies;
     }
 
+    public ArrayList<String> getListOfEnemies() {
+        return listOfEnemies;
+    }
 
+    public String getEnemy(int i) {
+        return listOfEnemies.get(i);
+    }
 }

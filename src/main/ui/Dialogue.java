@@ -30,11 +30,11 @@ public class Dialogue {
     public void start() {
         String tempString = "";
         int start = 0;
-        for (Enemy e: enemyList.getEnemyList()) {
+        for (Enemy e: enemyList.getCurrentEnemies()) {
             if (start == 0) {
                 tempString = e.getName();
                 start += 1;
-            } else if (start == enemyList.getEnemyList().size() - 1) {
+            } else if (start == enemyList.getCurrentEnemies().size() - 1) {
                 tempString = tempString + " and " + e.getName();
             } else {
                 tempString = tempString + ", " + e.getName();

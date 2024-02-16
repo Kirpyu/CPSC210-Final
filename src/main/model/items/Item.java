@@ -56,7 +56,6 @@ public class Item {
         this.abilityName = abilityName;
     }
 
-
     public void setDamage(int damage) {
         this.damage = damage;
     }
