@@ -9,11 +9,11 @@ public class Rogue extends Enemy {
 
     @Override
     public String attackLine() {
-        return "Rogue stabbed you for " + attack + " damage";
+        return "Rogue stabs you for " + attack + " damage";
     }
 
     @Override
     public String deathLine() {
-        return "Rogue Died";
+        return "Rogue died";
     }
 }

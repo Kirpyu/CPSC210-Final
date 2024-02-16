@@ -11,12 +11,12 @@ public class Paladin extends Enemy {
 
     @Override
     public String attackLine() {
-        return "Paladin smited you for " + attack + " damage";
+        return "Paladin smites you for " + attack + " damage";
     }
 
     @Override
     public String deathLine() {
-        return "Paladin Died";
+        return "Paladin died";
     }
 
 

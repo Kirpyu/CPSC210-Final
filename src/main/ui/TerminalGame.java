@@ -3,12 +3,7 @@ package ui;
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
-import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
-import com.googlecode.lanterna.gui2.WindowBasedTextGUI;
-import com.googlecode.lanterna.gui2.dialogs.MessageDialogBuilder;
-import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
 import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import model.*;
@@ -20,15 +15,24 @@ import java.util.ArrayList;
 
 //RPG Game
 public class TerminalGame {
+
     private Screen screen;
-    private int option;
-    private final ArrayList<String> listOfOptions;
     private String currentScreen;
+    private int option;
+
+    private int waveNumber;
+    private String playerState;
+
+    private final ArrayList<String> listOfOptions;
     private final Shop shop;
-    private Player player;
+    private final Player player;
     private final Inventory inventory;
     private final EnemyList enemyList;
-    private Dialogue dialogue;
+    private final Dialogue dialogue;
+
+    private InventoryUI inventoryUI;
+    private ShopUI shopUI;
+
 
     //EFFECTS: Constructor
     public TerminalGame() {
@@ -40,10 +44,17 @@ public class TerminalGame {
         listOfOptions.add("Stats");
 
         currentScreen = "Options";
+        playerState = "Fighting";
+        waveNumber = 0;
+
         player = new Player();
         shop = new Shop();
         inventory = new Inventory();
         enemyList = new EnemyList();
+
+        inventoryUI = new InventoryUI(inventory, this);
+        shopUI = new ShopUI(shop, inventory, this);
+
         dialogue = new Dialogue(player, enemyList);
     }
 
@@ -58,7 +69,7 @@ public class TerminalGame {
 
         option = 1;
 
-        enemyList.createEnemies();
+        enemyList.createEnemies(2);
         dialogue.start();
         render("up");
 
@@ -73,7 +84,7 @@ public class TerminalGame {
 
         while (keepGoing) {
             input = screen.readInput();
-            if (input.getKeyType() == KeyType.Escape) {
+            if (currentScreen.equals("End")) {
                 keepGoing = false;
             } else {
                 processInput(input);
@@ -84,6 +95,7 @@ public class TerminalGame {
 
     }
 
+    //MODIFIES: this
     //EFFECTS: checks input, then renders the game according to input
     private void processInput(KeyStroke type) throws IOException {
         switch (type.getKeyType()) {
@@ -97,14 +109,15 @@ public class TerminalGame {
 
             case Character:
                 if (type.getCharacter() == ' ') {
-                    //make this find cursor, then go to the page holding the right stuff
-                    //if current screen = blank, then do specific command
                     executeCurrentScreen();
                 }
                 break;
+            case Escape:
+                drawEndScreen();
         }
     }
 
+    // MODIFIES: this
     // EFFECTS: executes command given depending on the current page
     public void executeCurrentScreen() throws IOException {
         switch (currentScreen) {
@@ -112,7 +125,7 @@ public class TerminalGame {
                 executeOption();
                 break;
             case "Inventory":
-                executeInventory();
+                inventoryUI.executeInventory(option);
                 break;
             case "Shop":
                 executeShop();
@@ -123,47 +136,42 @@ public class TerminalGame {
             case "Stats":
                 executeStats();
                 break;
+            case "End":
+                System.exit(0);
         }
     }
 
     // MODIFIES: this
     // EFFECTS: render depending on the direction of button pressed and
     // changes space bar key behavior depending on current screen
-    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     private void render(String direction) throws IOException {
         screen.clear();
         switch (currentScreen) {
             case "Options":
                 drawArrow(direction, listOfOptions);
-                drawOptions(listOfOptions);
                 break;
 
             case "Attack":
                 drawArrow(direction, enemyList.getEnemyNames());
-                drawOptions(enemyList.getEnemyNames());
                 drawMoreOptions(enemyList.getEnemiesHealth());
                 break;
 
             case "Inventory":
                 drawArrow(direction, inventory.getInventoryNames());
-                drawOptions(inventory.getInventoryNames());
                 drawMoreOptions(inventory.getInventoryLevels());
                 break;
 
             case "Shop":
                 drawArrow(direction, shop.getShopListNames());
-                drawOptions(shop.getShopListNames());
                 drawMoreOptions(shop.getShopListCosts());
                 break;
 
             case "Stats":
                 drawArrow(direction, player.getStats());
-                drawOptions(player.getStats());
                 break;
         }
 
         drawDialogue(dialogue.displayDialogue());
-
         screen.refresh();
     }
 
@@ -215,6 +223,10 @@ public class TerminalGame {
         }
     }
 
+    //MODIFIES: this, targetEnemy
+    //EFFECTS: player attacks the enemy depending on their damage, then creates dialogue depending on
+    // whether the enemy dies. If the enemylist is empty after attacking, then the next waves ensues, otherwise
+    // the remaining enemies will attack the player.
     public void attackEnemy(Enemy targetEnemy) {
         dialogue.resetDialogue();
         player.damageEnemy(targetEnemy, player.getDamage());
@@ -222,7 +234,7 @@ public class TerminalGame {
         dialogue.addDialogue("You damaged " + targetEnemy.getName() + " for " + player.getDamage());
 
         if (targetEnemy.dead()) {
-            dialogue.addDialogue("You killed " + targetEnemy.getName());
+            dialogue.addDialogue(targetEnemy.deathLine());
             enemyList.removeEnemy(targetEnemy);
             inventory.addGold(targetEnemy.getGoldDropped());
             inventory.addInventory(targetEnemy.getItemDropped());
@@ -241,10 +253,13 @@ public class TerminalGame {
         }
     }
 
+    //MODIFIES: this, player
+    //EFFECTS: enemy attacks the players, then writes dialogue on the screen depending on if
+    // the player is dead
     public void attackPlayer(Player player) {
         for (Enemy e: enemyList.getEnemyList()) {
             player.damagePlayer(e.getAttack());
-            dialogue.addDialogue(e.getName() + " has hit you for " + e.getAttack() + "HP");
+            dialogue.addDialogue(e.attackLine());
         }
 
         if (player.dead()) {
@@ -270,7 +285,8 @@ public class TerminalGame {
         }
     }
 
-    //EFFECTS: draws the pointer next to options
+    //MODIFIES: this
+    //EFFECTS: draws the pointer next to options, then draws options afterwards
     private void drawArrow(String direction, ArrayList<String> options) {
         TextGraphics text = screen.newTextGraphics();
         text.setForegroundColor(TextColor.ANSI.WHITE);
@@ -289,9 +305,11 @@ public class TerminalGame {
         }
 
         text.putString(1, option, ">");
+        drawOptions(options);
 
     }
 
+    // MODIFIES: this
     // EFFECTS: displays all options
     private void drawOptions(ArrayList<String> options) {
         for (int i = 0; i < options.size(); i++) {
@@ -321,13 +339,8 @@ public class TerminalGame {
     //MODIFIES: this
     //EFFECTS: displays end screen
     private void drawEndScreen() {
-        WindowBasedTextGUI endGui = new MultiWindowTextGUI(screen, TextColor.ANSI.BLACK);
-
-        new MessageDialogBuilder()
-                .setTitle("You Died")
-                .addButton(MessageDialogButton.Close)
-                .setText("Get Good")
-                .build()
-                .showDialog(endGui);
+        System.exit(0);
     }
+
+
 }

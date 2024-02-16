@@ -22,15 +22,5 @@ class ItemTest {
         listOfWeapons.add(new Sword());
     }
 
-//    @Test
-//    public void getListOfItemsTest() {
-//        assertEquals(listOfWeapons, itemList.getListOfItems());
-//    }
-//
-//    @Test
-//    public void getItemNameTest() {
-//        for (Item i: listOfWeapons) {
-//            assertEquals(i.getItemName(), "Axe");
-//        }
-//    }
+
 }

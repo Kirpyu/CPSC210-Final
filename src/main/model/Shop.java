@@ -50,8 +50,8 @@ public class Shop {
     }
 
     //EFFECTS: checks if gold is sufficient to purchase item
-    public boolean canPurchase() {
-        return false;
+    public boolean canPurchase(int playerGold, int itemCost) {
+        return playerGold >= itemCost;
     }
 
     //EFFECTS: returns item at given integer in current shop

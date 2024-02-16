@@ -18,10 +18,6 @@ public abstract class Enemy {
         this.itemDropped = itemDropped;
     }
 
-    public void attackPlayer(Player player, int damage) {
-
-    }
-
     //randomizes gold dropped, attack, and health
     public void randomizeStats(int wave) {
 
@@ -44,10 +40,6 @@ public abstract class Enemy {
         return state;
     }
 
-    public String getName() {
-        return name;
-    }
-
     //setters
     public void setHealth(int health) {
         this.health = health;
@@ -62,14 +54,16 @@ public abstract class Enemy {
         return health;
     }
 
-    //EFFECTS: returns amount of gold dropped by enemy
     public int getGoldDropped() {
         return goldDropped;
     }
 
-    //EFFECTS: returns item dropped by enemy
     public Item getItemDropped() {
         return itemDropped;
+    }
+
+    public String getName() {
+        return name;
     }
 
 

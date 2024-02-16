@@ -6,7 +6,7 @@ import model.items.Item;
 import java.util.ArrayList;
 
 public class Player {
-    private int maxHealth;
+    private final int maxHealth;
     private int currentHealth;
     private int attack;
     private int damage;
@@ -26,11 +26,7 @@ public class Player {
 
     //EFFECTS: false if player is alive, else drops gold and item if hero is dead
     public boolean dead() {
-        boolean state = false;
-        if (currentHealth <= 0) {
-            state = true;
-        }
-        return state;
+        return currentHealth <= 0;
     }
 
     public ArrayList<String> getStats() {
