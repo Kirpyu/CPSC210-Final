@@ -15,8 +15,15 @@ public class ItemList {
         listOfItems.add(new Sword());
     }
 
-    //EFFECTS: returns all list of items that exists
+    //EFFECTS: returns item at given index
+    public Item getItem(int i) {
+        return listOfItems.get(i);
+    }
+
+    //getter
     public ArrayList<Item> getListOfItems() {
         return listOfItems;
     }
+
+
 }

@@ -16,12 +16,15 @@ public class Item {
         this.cost = 0;
     }
 
-    public int getDamage() {
-        return damage;
-    }
+
 
     public void addLevel() {
         level += 1;
+    }
+
+    // getters
+    public int getDamage() {
+        return damage;
     }
 
     public int getLevel() {
@@ -36,15 +39,19 @@ public class Item {
         return itemName;
     }
 
-    public void setCost(int cost) {
-        this.cost = cost;
-    }
-
     public int getCost() {
         return cost;
     }
 
+
+
+
+
     //setters
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
+
     public void setAbilityName(String abilityName) {
         this.abilityName = abilityName;
     }

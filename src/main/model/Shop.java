@@ -15,7 +15,6 @@ public class Shop {
         itemList = new ItemList();
 
         displayItem();
-
     }
 
     //MODIFIES: this
@@ -31,7 +30,7 @@ public class Shop {
     //EFFECTS: returns a list of all the costs of items in the shop
     public ArrayList<String> getShopListCosts() {
         ArrayList<String> tempList = new ArrayList<>();
-        for (Item i : itemList.getListOfItems()) {
+        for (Item i : shopList) {
             tempList.add(i.getCost() + "G");
         }
 
@@ -41,7 +40,8 @@ public class Shop {
     //EFFECTS: returns all item names currently in the shop
     public ArrayList<String> getShopListNames() {
         ArrayList<String> tempList = new ArrayList<>();
-        for (Item i : itemList.getListOfItems()) {
+        for (Item i : shopList) {
+            i.setCost(1);
             tempList.add(i.getItemName());
         }
         tempList.add("Exit");
@@ -54,12 +54,21 @@ public class Shop {
         return playerGold >= itemCost;
     }
 
+    public ArrayList<String> setShopListCosts() {
+        ArrayList<String> tempList = new ArrayList<>();
+        for (Item i : shopList) {
+            tempList.add(i.getCost() + "G");
+        }
+
+        return tempList;
+    }
+
     //EFFECTS: returns item at given integer in current shop
-    public Item purchaseItem(int i) {
+    public Item getItem(int i) {
         return getShopList().get(i);
     }
 
-    //EFFECTS: returns items in the shop
+    //getter
     public ArrayList<Item> getShopList() {
         return shopList;
     }

@@ -21,7 +21,6 @@ public class TerminalGame {
     private int option;
 
     private int waveNumber;
-    private String playerState;
 
     private final ArrayList<String> listOfOptions;
     private final Shop shop;
@@ -44,7 +43,6 @@ public class TerminalGame {
         listOfOptions.add("Stats");
 
         currentScreen = "Options";
-        playerState = "Fighting";
         waveNumber = 0;
 
         player = new Player();
@@ -52,10 +50,11 @@ public class TerminalGame {
         inventory = new Inventory();
         enemyList = new EnemyList();
 
-        inventoryUI = new InventoryUI(inventory, this);
-        shopUI = new ShopUI(shop, inventory, this);
+
 
         dialogue = new Dialogue(player, enemyList);
+        inventoryUI = new InventoryUI(inventory, this);
+        shopUI = new ShopUI(shop, inventory, dialogue, this);
     }
 
     // MODIFIES: this
@@ -128,7 +127,7 @@ public class TerminalGame {
                 inventoryUI.executeInventory(option);
                 break;
             case "Shop":
-                executeShop();
+                shopUI.executeShop(option);
                 break;
             case "Attack":
                 executeAttack();
@@ -144,7 +143,7 @@ public class TerminalGame {
     // MODIFIES: this
     // EFFECTS: render depending on the direction of button pressed and
     // changes space bar key behavior depending on current screen
-    private void render(String direction) throws IOException {
+    public void render(String direction) throws IOException {
         screen.clear();
         switch (currentScreen) {
             case "Options":
@@ -201,17 +200,6 @@ public class TerminalGame {
         render("up");
     }
 
-    // MODIFIES: this
-    // EFFECTS: if the cursor hovers exit, then returns to option, else
-    // adds item to inventory
-    public void executeShop() throws IOException {
-        if (option == shop.getShopList().size()) {
-            swapScreen("Options");
-        } else {
-            inventory.addInventory(shop.purchaseItem(option));
-        }
-    }
-
     //MODIFIES: this
     //EFFECTS: executes the attack if cursor does not hover exit
     public void executeAttack() throws IOException {
@@ -245,9 +233,9 @@ public class TerminalGame {
         }
 
         if (enemyList.getEnemyList().isEmpty()) {
-            dialogue.addDialogue("You have killed all enemies");
-            dialogue.addDialogue("Shop has refreshed!");
-            dialogue.addDialogue("Next Enemy Wave Incoming");
+            dialogue.addDialogue("You have killed all enemies! Shop has refreshed");
+            dialogue.addDialogue("Next enemies have arrived!");
+            enemyList.createEnemies(2);
         } else {
             attackPlayer(player);
         }
@@ -271,13 +259,6 @@ public class TerminalGame {
 
     //MODIFIES: this
     //EFFECTS: pressing exit exits the inventory
-    public void executeInventory() throws IOException {
-        if (option == inventory.getInventory().size() + 1) {
-            swapScreen("Options");
-        } else {
-            System.out.println("lol");
-        }
-    }
 
     public void executeStats() throws IOException {
         if (option == player.getStats().size() - 1) {
@@ -319,6 +300,7 @@ public class TerminalGame {
         }
     }
 
+    // MODIFIES: this
     // EFFECTS: displays all options
     private void drawMoreOptions(ArrayList<String> options) {
         for (int i = 0; i < options.size(); i++) {
@@ -328,6 +310,8 @@ public class TerminalGame {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: draws dialogue at the bottom of the screen
     private void drawDialogue(ArrayList<String> options) {
         for (int i = 0; i < options.size(); i++) {
             TextGraphics text = screen.newTextGraphics();
@@ -336,8 +320,7 @@ public class TerminalGame {
         }
     }
 
-    //MODIFIES: this
-    //EFFECTS: displays end screen
+    //EFFECTS: exits game
     private void drawEndScreen() {
         System.exit(0);
     }

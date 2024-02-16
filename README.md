@@ -8,8 +8,8 @@ The project serves as a quick introduction to game development for me and will g
 whether I intend to pursue game development/ similar projects.
 
 ## **User Stories:**
-- As a user, I want to be able to add items to my inventory through a shop or by killing enemies any amount of times
-with each level implying a duplicate.
+- As a user, I want to be able to add any amount of items to my inventory through a shop or by killing enemies any amount of times
+  (each duplicate will counts towards the items level)
 - As a user, I want to be able to open my inventory to see all acquired items.
-- As a user, I want to be able to kill enemies and gain gold and items.
-- As a user, I want to be able to gain abilities through gaining items.
+- As a user, I want to be able to kill enemies to gain gold and items.
+- As a user, I want to be able to fight random enemies

@@ -69,4 +69,14 @@ public class Inventory {
         }
         return tempList;
     }
+
+    //getter
+    public int getGold() {
+        return gold;
+    }
+
+    //setter
+    public void setGold(int gold) {
+        this.gold = gold;
+    }
 }
