@@ -19,19 +19,28 @@ public class Inventory {
     //EFFECTS: if item is already inventory, adds a level to the item,
     // otherwise adds the item to inventory
     public void addInventory(Item item) {
-        if (getInventoryNames().contains(item.getItemName())) {
-            for (Item i:inventoryList) {
-                if (i.getItemName().equals(item.getItemName())) {
-                    i.addLevel();
-                    break;
-                }
-            }
-        } else {
+
+        if (!getInventoryNames().contains(item.getItemName())) {
             inventoryList.add(item);
+        } else {
+            addItemLevel(item);
+        }
+
+    }
+
+    //REQUIRES: item != null
+    //MODIFIES: item
+    //EFFECTS: add a level to an item if found in inventory list
+    public void addItemLevel(Item item) {
+        for (Item i:inventoryList) {
+            if (i.getItemName().equals(item.getItemName())) {
+                i.addLevel();
+                break;
+            }
         }
     }
 
-    // REGUIRES: gold > 0
+    // REQUIRES: gold > 0
     // MODIFIES: this
     // EFFECTS: adds given amount to gold
     public void addGold(int gold) {

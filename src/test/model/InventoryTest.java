@@ -28,8 +28,6 @@ class InventoryTest {
     public void addInventoryTest() {
         ArrayList<String> tempList = new ArrayList<>();
 
-        assertEquals(0, inventory.getInventory().size());
-
         inventory.addInventory(new Axe());
         assertEquals("Axe", inventory.getInventory().get(0).getItemName());
         assertEquals(1, inventory.getInventory().size());
@@ -64,6 +62,29 @@ class InventoryTest {
         assertEquals(tempList, inventory.getInventoryNames());
 
 
+    }
+
+    @Test
+    public void addItemLevel() {
+        ArrayList<Item> tempList = new ArrayList<>();
+        inventory.addItemLevel(new Axe());
+        assertEquals(tempList, inventory.getInventory());
+
+        Axe axe = new Axe();
+        inventory.addInventory(axe);
+        assertEquals(1, axe.getLevel());
+
+        inventory.addItemLevel(new Axe());
+        assertEquals(2, axe.getLevel());
+
+        inventory.addItemLevel(new Axe());
+        assertEquals(3, axe.getLevel());
+
+        Dagger dagger = new Dagger();
+        inventory.addInventory(dagger);
+        inventory.addItemLevel(new Dagger());
+        assertEquals(2, dagger.getLevel());
+        assertEquals(3, axe.getLevel());
     }
 
     @Test
