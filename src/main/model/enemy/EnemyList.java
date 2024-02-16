@@ -3,10 +3,10 @@ package model.enemy;
 import java.util.ArrayList;
 
 public class EnemyList {
-    private ArrayList<Enemy> currentEnemies;
-    private final ArrayList<String> listOfEnemies;
+    private ArrayList<Enemy> currentEnemies; // holds enemies currently in the wave
+    private final ArrayList<String> listOfEnemies; // holds all enemies that exist
 
-    //constructor
+    //Adds a string of all enemies that exists to listOfEnemies
     public EnemyList() {
         currentEnemies = new ArrayList<>();
         listOfEnemies = new ArrayList<>();
@@ -17,6 +17,7 @@ public class EnemyList {
         listOfEnemies.add("Berserker");
     }
 
+    //REQUIRES: enemy is one of enemies that exist
     //MODIFIES: this
     //EFFECTS: instantiates a given enemy
     public void addEnemy(String enemy) {
@@ -39,12 +40,14 @@ public class EnemyList {
         }
     }
 
+    //REQUIRES: enemy != null and is in currentEnemies
     //MODIFIES: this
     //EFFECTS: removes a selected enemy
     public void removeEnemy(Enemy enemy) {
         currentEnemies.remove(enemy);
     }
 
+    //REQUIRES: i < currentEnemies.size
     //EFFECTS: returns selected enemy
     public Enemy getCurrentEnemy(int i) {
         return currentEnemies.get(i);

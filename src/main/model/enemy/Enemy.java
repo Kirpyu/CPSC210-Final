@@ -9,7 +9,7 @@ public abstract class Enemy {
     protected int goldDropped;
     protected Item itemDropped;
 
-    // constructor
+    //Creates an enemy
     public Enemy(String name, int health, int attack, int goldDropped, Item itemDropped) {
         this.name = name;
         this.health = health;

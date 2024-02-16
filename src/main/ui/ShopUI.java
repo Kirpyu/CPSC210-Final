@@ -13,6 +13,7 @@ public class ShopUI {
     private final TerminalGame terminalGame;
 
 
+    //Creates screen for Shop
     public ShopUI(Shop shop, Inventory inventory, Dialogue dialogue, TerminalGame terminalGame) {
         this.shop = shop;
         this.inventory = inventory;

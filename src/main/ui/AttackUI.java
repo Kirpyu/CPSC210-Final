@@ -14,7 +14,7 @@ public class AttackUI {
     private final Dialogue dialogue;
     private final TerminalGame terminalGame;
 
-    // constructor
+    // Creates screen for attacking
     public AttackUI(Player player, EnemyList enemyList, Inventory inventory, Dialogue dialogue,
                     TerminalGame terminalGame) {
         this.player = player;
@@ -35,6 +35,7 @@ public class AttackUI {
         }
     }
 
+    //REQUIRES: targetEnemy != null
     //MODIFIES: terminalGame, targetEnemy
     //EFFECTS: player attacks the enemy depending on their damage, then creates dialogue depending on
     // whether the enemy dies. If the enemylist is empty after attacking, then the next waves ensues, otherwise
@@ -65,6 +66,7 @@ public class AttackUI {
         }
     }
 
+    //REQUIRES: player != null
     //MODIFIES: terminalGame, player
     //EFFECTS: enemy attacks the players, then writes dialogue on the screen depending on if
     // the player is dead
@@ -81,6 +83,7 @@ public class AttackUI {
         }
     }
 
+    //REQUIRES: amount > 0
     //MODIFIES: this
     //EFFECTS: instantiates a certain amount of random enemies
     public void createEnemies(int amount) {

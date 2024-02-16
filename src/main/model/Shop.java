@@ -6,10 +6,10 @@ import model.items.ItemList;
 import java.util.ArrayList;
 
 public class Shop {
-    private final ArrayList<Item> shopList;
-    private final ItemList itemList;
+    private final ArrayList<Item> shopList; // list of items displayed in store
+    private final ItemList itemList; // list of items that exist
 
-    //constructor
+    //Creates a shop and adds items to display in shop
     public Shop() {
         shopList = new ArrayList<>();
         itemList = new ItemList();
@@ -62,6 +62,7 @@ public class Shop {
 //        return tempList;
 //    }
 
+    //REQUIRES: i < getShopList().size();
     //EFFECTS: returns item at given integer in current shop
     public Item getItem(int i) {
         return getShopList().get(i);

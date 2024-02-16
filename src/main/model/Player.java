@@ -8,10 +8,11 @@ import java.util.ArrayList;
 public class Player {
     private final int maxHealth;
     private int currentHealth;
-    private int attack;
-    private int damage;
+    private int attack; // base attack
+    private int damage; // damage after considering equipped item, damage dealt
     private Item equippedItem;
 
+    // Creates a player
     public Player() {
         maxHealth = 20;
         currentHealth = maxHealth;
@@ -20,6 +21,9 @@ public class Player {
         equippedItem = null;
     }
 
+    //REQUIRES: int > 0
+    //MODIFIES: enemy
+    //EFFECTS: Deducts health from given enemy based on given damage
     public void damageEnemy(Enemy enemy, int damage) {
         enemy.setHealth(enemy.getHealth() - damage);
     }
@@ -45,6 +49,7 @@ public class Player {
         return tempList;
     }
 
+    //REQUIRES: i > 0
     //MODIFIES: this
     //EFFECTS: deducts specified integer from current health
     public void damagePlayer(int i) {

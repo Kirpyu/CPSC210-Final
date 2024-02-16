@@ -9,11 +9,13 @@ public class Berserker extends Enemy {
     }
 
 
+    //EFFECTS: returns the line berserkers state when they attack
     @Override
     public String attackLine() {
         return "Berseker cuts you for " + attack + " damage";
     }
 
+    //EFFECTS: returns the line berserkers state when they die
     @Override
     public String deathLine() {
         return "Berserker died";

@@ -6,15 +6,16 @@ import java.util.ArrayList;
 
 // keeps track of inventory
 public class Inventory {
-    private int gold;
-    private final ArrayList<Item> inventoryList;
+    private int gold; // amount of gold in inventory
+    private final ArrayList<Item> inventoryList; // keeps track of the inventory
 
-    //constructor
+    //Creates an inventory
     public Inventory() {
         inventoryList = new ArrayList<>();
     }
 
-    //MODIFIES: this, Item
+    //REQUIRES: item != null
+    //MODIFIES: this, item
     //EFFECTS: if item is already inventory, adds a level to the item,
     // otherwise adds the item to inventory
     public void addInventory(Item item) {
@@ -30,16 +31,14 @@ public class Inventory {
         }
     }
 
+    // REGUIRES: gold > 0
+    // MODIFIES: this
+    // EFFECTS: adds given amount to gold
     public void addGold(int gold) {
         this.gold += gold;
     }
 
-    //EFFECTS: returns list of items currently in inventory
-    public ArrayList<Item> getInventory() {
-        return inventoryList;
-    }
-
-    //EFFECTS: returns list of item names in inventory
+    //EFFECTS: returns list of item names in inventory with added dialogue
     public ArrayList<String> getInventoryNames() {
         ArrayList<String> tempList = new ArrayList<>();
         for (Item i: inventoryList) {
@@ -50,7 +49,7 @@ public class Inventory {
         return tempList;
     }
 
-    //EFFECTS: returns list of ability names from items in inventory
+    //EFFECTS: returns list of ability names from items in inventory with punch
     public ArrayList<String> getAbilityNames() {
         ArrayList<String> tempList = new ArrayList<>();
         tempList.add("Punch");
@@ -60,7 +59,7 @@ public class Inventory {
         return tempList;
     }
 
-    //EFFECTS: returns all the levels of items in inventory
+    //EFFECTS: returns all the levels of items in inventory with Level in front
     public ArrayList<String> getInventoryLevels() {
         ArrayList<String> tempList = new ArrayList<>();
         for (Item i: inventoryList) {
@@ -72,6 +71,10 @@ public class Inventory {
     //getter
     public int getGold() {
         return gold;
+    }
+
+    public ArrayList<Item> getInventory() {
+        return inventoryList;
     }
 
     //setter

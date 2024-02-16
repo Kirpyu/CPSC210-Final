@@ -8,11 +8,13 @@ public class Warrior extends Enemy {
     }
 
 
+    //EFFECTS: returns the lines warriors state when they attack
     @Override
     public String attackLine() {
         return "Warrior slashes you for " + attack + " damage";
     }
 
+    //EFFECTS: returns the line warriors state when they die
     @Override
     public String deathLine() {
         return "Warrior died";

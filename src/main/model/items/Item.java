@@ -7,7 +7,7 @@ public class Item {
     protected int level;
     protected int cost;
 
-    //getters
+    //Creates an item
     public Item(String itemName, String abilityName, int level, int damage) {
         this.itemName = itemName;
         this.abilityName = abilityName;
@@ -18,6 +18,8 @@ public class Item {
 
 
 
+    //MODIFIES: this
+    //EFFECTS: adds a level
     public void addLevel() {
         level += 1;
     }

@@ -9,8 +9,8 @@ import java.util.ArrayList;
 public class Dialogue {
     EnemyList enemyList;
     Player player;
-    ArrayList<String> displayedDialogue;
-    ArrayList<String> currentDialogue;
+    ArrayList<String> displayedDialogue; // holds dialogue in the screen
+    ArrayList<String> currentDialogue; // holds accumulated dialogue that's backlogged
 
     public Dialogue(Player player, EnemyList enemyList) {
         this.player = player;
@@ -28,16 +28,16 @@ public class Dialogue {
     // MODIFIES: this
     // EFFECTS: creates the starting dialogue of the enemies arriving
     public void start() {
-        String tempString = "";
+        StringBuilder tempString = new StringBuilder();
         int start = 0;
         for (Enemy e: enemyList.getCurrentEnemies()) {
             if (start == 0) {
-                tempString = e.getName();
+                tempString = new StringBuilder(e.getName());
                 start += 1;
             } else if (start == enemyList.getCurrentEnemies().size() - 1) {
-                tempString = tempString + " and " + e.getName();
+                tempString.append(" and ").append(e.getName());
             } else {
-                tempString = tempString + ", " + e.getName();
+                tempString.append(", ").append(e.getName());
                 start += 1;
             }
         }

@@ -3,9 +3,9 @@ package model.items;
 import java.util.ArrayList;
 
 public class ItemList {
-    private final ArrayList<Item> listOfItems;
+    private final ArrayList<Item> listOfItems; // a list of all items that exist
 
-    //constructor
+    //Creates a list of all weapons that exist
     public ItemList() {
         listOfItems = new ArrayList<>();
         listOfItems.add(new Axe());
@@ -15,6 +15,7 @@ public class ItemList {
         listOfItems.add(new Sword());
     }
 
+    //REQUIRES: i < listOfItems.size()
     //EFFECTS: returns item at given index
     public Item getItem(int i) {
         return listOfItems.get(i);
