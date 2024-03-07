@@ -13,7 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-// Represents a reader that reads workroom from JSON data stored in file
+// Represents a reader that reads enemylist, player, and inventory from JSON data stored in file
 public class JsonReader {
     private final String source;
 
@@ -22,7 +22,7 @@ public class JsonReader {
         this.source = source;
     }
 
-    // EFFECTS: reads workroom from file and returns it;
+    // EFFECTS: reads inventory from file and returns it;
     // throws IOException if an error occurs reading data from file
     public Inventory readInventory(Inventory i) throws IOException {
         String jsonData = readFile(source);
@@ -30,12 +30,16 @@ public class JsonReader {
         return (Inventory) parse(i, jsonObject);
     }
 
+    // EFFECTS: reads enemylist from file and returns it;
+    // throws IOException if an error occurs reading data from file
     public EnemyList readEnemyList(EnemyList e) throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
         return (EnemyList) parse(e, jsonObject);
     }
 
+    // EFFECTS: reads player from file and returns it;
+    // throws IOException if an error occurs reading data from file
     public Player readPlayer(Player p) throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
@@ -54,17 +58,18 @@ public class JsonReader {
         return contentBuilder.toString();
     }
 
-    // EFFECTS: parses inventory from JSON object and returns it
+    // EFFECTS: sorts and parses an object from JSON object and returns it
     private Object parse(Object o, JSONObject jsonObject) {
         sortKey(o, jsonObject);
         return o;
     }
 
-
-    // MODIFIES: i
-    // EFFECTS: parses thingies from JSON object and adds them to workroom
+    // MODIFIES: o
+    // EFFECTS: casts object to right object type, then
+    // parses object from JSON object and adds them to appropriate object
     private void sortKey(Object o, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("save");
+
         for (Object json : jsonArray) {
             JSONObject nextItem = (JSONObject) json;
 
@@ -79,9 +84,10 @@ public class JsonReader {
                 break;
             }
         }
-
     }
 
+    // MODIFIES: i
+    // EFFECTS: parses items from JSON object and adds them to inventory
     private void addInventory(Inventory i, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("inventory");
         i.clearInventory();
@@ -94,8 +100,8 @@ public class JsonReader {
         i.setGold(gold);
     }
 
-    // MODIFIES: i
-    // EFFECTS: parses thingies from JSON object and adds them to workroom
+    // MODIFIES: e
+    // EFFECTS: parses enemies from JSON object and adds them to enemylist
     private void addEnemyList(EnemyList e, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("enemies");
         e.removeAllEnemies();
@@ -105,6 +111,8 @@ public class JsonReader {
         }
     }
 
+    // MODIFIES: p
+    // EFFECTS: parses stats from JSON object and adds them to player
     private void addPlayer(Player p, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("player");
         for (Object json : jsonArray) {

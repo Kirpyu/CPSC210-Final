@@ -97,6 +97,19 @@ class EnemyListTest {
     }
 
     @Test
+    public void getEnemiesStatsTest() {
+        ArrayList<String> tempList = new ArrayList<>();
+        assertEquals(tempList, enemyList.getEnemiesStats());
+
+        tempList.add("5HP 5ATK");
+        enemyList.addEnemy("Rogue");
+        assertEquals(tempList, enemyList.getEnemiesStats());
+
+        enemyList.addEnemy("Warrior");
+        assertEquals(2, enemyList.getEnemiesStats().size());
+
+    }
+    @Test
     public void getEnemiesHealthTest() {
         ArrayList<String> tempList = new ArrayList<>();
         assertEquals(tempList, enemyList.getEnemiesHealth());

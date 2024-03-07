@@ -58,7 +58,7 @@ public class Player {
         currentHealth -= i;
     }
 
-    //EFFECTS: creates an json object for player with player stats
+    //EFFECTS: creates a json object for player with player stats
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("player", statsToJson());

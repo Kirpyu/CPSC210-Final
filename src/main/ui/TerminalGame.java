@@ -88,7 +88,8 @@ public class TerminalGame {
         handleUserInput();
     }
 
-    // EFFECTS: processes user input
+    // EFFECTS: processes user input and progresses per input user makes (actions instead of ticks)
+    // until process ends
     private void handleUserInput() throws IOException {
         boolean keepGoing = true;
         KeyStroke input;
@@ -253,7 +254,7 @@ public class TerminalGame {
     public void swapScreen(String screenName) throws IOException {
         currentScreen = screenName;
         option = 1;
-        render("up");
+        refresh();
     }
 
     //MODIFIES: this
@@ -298,7 +299,7 @@ public class TerminalGame {
     }
 
     // REQUIRES: option >= 0
-    // EFFECTS: displays all options
+    // EFFECTS: displays all given options
     public void drawOptions(ArrayList<String> options) {
         for (int i = 0; i < options.size(); i++) {
             TextGraphics text = screen.newTextGraphics();
@@ -332,7 +333,7 @@ public class TerminalGame {
         System.exit(0);
     }
 
-    //EFFECTS: saves inventory, enemylist, and player to the jSoon file
+    //EFFECTS: saves inventory, enemylist, and player to the jSon file
     private void save() throws IOException {
         try {
             jsonWriter.open();
@@ -347,7 +348,7 @@ public class TerminalGame {
     }
 
     // MODIFIES: this
-    // EFFECTS: loads inventory from file
+    // EFFECTS: loads all objects from save file
     private void load() throws IOException {
         try {
             this.inventory = jsonReader.readInventory(inventory);

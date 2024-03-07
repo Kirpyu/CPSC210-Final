@@ -41,7 +41,6 @@ public class JsonReaderTest extends JsonTest {
     @Test
     void testWriterInvalidFile() {
         try {
-            Player p = new Player();
             JsonWriter writer = new JsonWriter("./data/my\0illegal:fileName.json");
             writer.open();
             fail("IOException was expected");
@@ -60,6 +59,8 @@ public class JsonReaderTest extends JsonTest {
 
             JsonReader reader = new JsonReader("./data/testWriterEmptySave.json");
             e = reader.readEnemyList(e);
+            p = reader.readPlayer(p);
+            i = reader.readInventory(i);
             enemyList.add("Exit");
 
             assertEquals(enemyList, e.getEnemyNames());
@@ -113,6 +114,17 @@ public class JsonReaderTest extends JsonTest {
 
         } catch (IOException e) {
             fail("Exception should not have been thrown");
+        }
+    }
+
+    @Test
+    void testEmptyFile() {
+        try {
+            JsonReader reader = new JsonReader("./data/testEmptySave.json");
+            p = reader.readPlayer(p);
+            checkPlayer(20, p);
+        } catch (IOException e) {
+            fail("Unhandled Exception");
         }
     }
 

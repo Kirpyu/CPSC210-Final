@@ -1,42 +1,17 @@
 {"save": [
     {
-        "gold": 10,
-        "inventory": [
-            {
-                "damage": 5,
-                "level": 1,
-                "name": "Sword",
-                "ability": "Strike"
-            },
-            {
-                "damage": 5,
-                "level": 3,
-                "name": "Dagger",
-                "ability": "Stab"
-            },
-            {
-                "damage": 3,
-                "level": 2,
-                "name": "Axe",
-                "ability": "Cleave"
-            },
-            {
-                "damage": 10,
-                "level": 1,
-                "name": "Staff",
-                "ability": "Cast"
-            }
-        ]
+        "gold": 0,
+        "inventory": []
     },
     {"enemies": [
         {
-            "name": "Paladin",
-            "health": 10
+            "name": "Rogue",
+            "health": 5
         },
         {
-            "name": "Berserker",
-            "health": 5
+            "name": "Warrior",
+            "health": 10
         }
     ]},
-    {"player": [{"health": 8}]}
+    {"player": [{"health": 20}]}
 ]}
