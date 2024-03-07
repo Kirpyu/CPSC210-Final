@@ -1,0 +1,24 @@
+{"save": [
+    {"inventory": [
+        {
+            "damage": 10,
+            "level": 4,
+            "name": "Staff",
+            "ability": "Cast"
+        },
+        {
+            "damage": 3,
+            "level": 4,
+            "name": "Axe",
+            "ability": "Cleave"
+        }
+    ]},
+    {"enemies": [{
+        "gold": 5,
+        "item": "model.items.Shield@636be97c",
+        "attack": 1,
+        "name": "Paladin",
+        "health": 5
+    }]},
+    {"health": 19}
+]}

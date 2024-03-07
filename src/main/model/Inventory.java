@@ -83,7 +83,6 @@ public class Inventory {
         JSONObject json = new JSONObject();
         json.put("inventory", inventoryToJSon());
         return json;
-
     }
 
     public JSONArray inventoryToJSon() {
@@ -94,6 +93,10 @@ public class Inventory {
         }
 
         return jsonArray;
+    }
+
+    public void clearInventory() {
+        inventoryList.clear();
     }
 
     //getter

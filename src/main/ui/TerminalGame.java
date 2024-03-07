@@ -25,9 +25,9 @@ public class TerminalGame {
 //    private int waveNumber; // determines the numbers of waves that has passed
     private final ArrayList<String> listOfOptions; // determines list of options in options screen
     private final Shop shop; // holds a shop for players to purchase items in
-    private final Player player; // holds the main player
+    private Player player; // holds the main player
     private Inventory inventory; // holds the players inventory
-    private final EnemyList enemyList; // determines enemies that exist
+    private EnemyList enemyList; // determines enemies that exist
     private final Dialogue dialogue; // determines dialogue behavior
 
     private final InventoryUI inventoryUI; // holds behavior of inventory screen
@@ -35,7 +35,7 @@ public class TerminalGame {
     private final AttackUI attackUI; // holds behavior of attack screen
 
     // json
-    private static final String JSON_STORE = "./data/inventory.json";
+    private static final String JSON_STORE = "./data/save.json";
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
@@ -294,7 +294,7 @@ public class TerminalGame {
     private void saveInventory() {
         try {
             jsonWriter.open();
-            jsonWriter.writeInventory(inventory);
+            jsonWriter.write(inventory, enemyList, player);
             jsonWriter.close();
         } catch (FileNotFoundException e) {
             System.out.println("Saved");
@@ -306,6 +306,8 @@ public class TerminalGame {
     private void loadInventory() {
         try {
             this.inventory = jsonReader.readInventory(inventory);
+            this.enemyList = jsonReader.readEnemyList(enemyList);
+            this.player = jsonReader.readPlayer(player);
             System.out.println("loaded");
         } catch (IOException e) {
             System.out.println("failin");

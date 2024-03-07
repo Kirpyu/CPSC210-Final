@@ -2,11 +2,12 @@ package model;
 
 import model.enemy.Enemy;
 import model.items.Item;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 public class Player {
-    private final int maxHealth;
+    private int maxHealth;
     private int currentHealth;
     private int attack; // base attack
     private int damage; // damage after considering equipped item, damage dealt
@@ -56,6 +57,14 @@ public class Player {
         currentHealth -= i;
     }
 
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("health", currentHealth);
+
+        return json;
+
+    }
+
     //getters
     public int getCurrentHealth() {
         return currentHealth;
@@ -88,5 +97,9 @@ public class Player {
 
     public void setDamage(int damage) {
         this.damage = damage;
+    }
+
+    public void setCurrentHealth(int currentHealth) {
+        this.currentHealth = currentHealth;
     }
 }
