@@ -34,14 +34,14 @@
     {"enemies": [
         {
             "gold": 5,
-            "item": "model.items.Staff@3d680b5a",
+            "item": "model.items.Staff@3e2e18f2",
             "attack": 5,
             "name": "Mage",
             "health": 5
         },
         {
             "gold": 5,
-            "item": "model.items.Staff@4b5d6a01",
+            "item": "model.items.Staff@470f1802",
             "attack": 5,
             "name": "Mage",
             "health": 5

@@ -44,10 +44,14 @@ public class Dialogue {
         currentDialogue.add(tempString + " has arrived!");
     }
 
+    //MODIFIES: this
+    //EFFECTS: adds string to current dialogue
     public void addDialogue(String dialogue) {
         currentDialogue.add(dialogue);
     }
 
+    //MODIFIES: this
+    //EFFECTS: removes all strings from current dialogue
     public void resetDialogue() {
         currentDialogue.removeAll(currentDialogue);
     }

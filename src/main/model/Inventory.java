@@ -79,12 +79,14 @@ public class Inventory {
         return tempList;
     }
 
+    //EFFECTS: creates a json object with items in inventory
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("inventory", inventoryToJSon());
         return json;
     }
 
+    //EFFECTS: returns all items in inventory as json array
     public JSONArray inventoryToJSon() {
         JSONArray jsonArray = new JSONArray();
 
@@ -95,6 +97,8 @@ public class Inventory {
         return jsonArray;
     }
 
+    //MODIFIES: this
+    //EFFECTS: clears all things from inventory
     public void clearInventory() {
         inventoryList.clear();
     }

@@ -64,6 +64,7 @@ public class Item {
         this.damage = damage;
     }
 
+    //EFFECTS: returns items stats as a json object
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("name", itemName);

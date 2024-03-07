@@ -11,7 +11,7 @@ import java.io.PrintWriter;
 
 //used JsonSerailizationDemo code
 
-// Represents a writer that writes JSON representation of workroom to file
+// Represents a writer that writes JSON representation of save to file
 public class JsonWriter {
     private static final int TAB = 4;
     private PrintWriter writer;
@@ -30,7 +30,7 @@ public class JsonWriter {
     }
 
     // MODIFIES: this
-    // EFFECTS: writes JSON representation of workroom to file
+    // EFFECTS: writes JSON representation of parameters to file
     public void write(Inventory i, EnemyList e, Player p) {
         JSONArray jsonArray = new JSONArray();
         JSONObject json = new JSONObject();

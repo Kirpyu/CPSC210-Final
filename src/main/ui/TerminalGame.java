@@ -157,7 +157,6 @@ public class TerminalGame {
     // MODIFIES: this
     // EFFECTS: render depending on the direction of button pressed and
     // changes space bar key behavior depending on current screen
-    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public void render(String direction) throws IOException {
         screen.clear();
         switch (currentScreen) {
@@ -191,7 +190,6 @@ public class TerminalGame {
 
     // MODIFIES: this
     // EFFECTS: refreshes the screen with new lines
-    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public void refresh() throws IOException {
         screen.clear();
         switch (currentScreen) {
@@ -240,10 +238,10 @@ public class TerminalGame {
                 swapScreen("Stats");
                 break;
             case 4:
-                saveInventory();
+                save();
                 break;
             case 5:
-                loadInventory();
+                load();
                 break;
 
         }
@@ -334,29 +332,33 @@ public class TerminalGame {
         System.exit(0);
     }
 
-    private void saveInventory() {
+    //EFFECTS: saves inventory, enemylist, and player to the jSoon file
+    private void save() throws IOException {
         try {
             jsonWriter.open();
             jsonWriter.write(inventory, enemyList, player);
             jsonWriter.close();
+            dialogue.addDialogue("Saved File");
+
         } catch (FileNotFoundException e) {
-            System.out.println("Saved");
+            System.out.println("Error");
         }
+        refresh();
     }
 
     // MODIFIES: this
     // EFFECTS: loads inventory from file
-    private void loadInventory() throws IOException {
+    private void load() throws IOException {
         try {
             this.inventory = jsonReader.readInventory(inventory);
             this.enemyList = jsonReader.readEnemyList(enemyList);
             this.player = jsonReader.readPlayer(player);
-            System.out.println("loaded");
         } catch (IOException e) {
-            System.out.println("failin");
+            System.out.println("Fail");
         }
+
         dialogue.resetDialogue();
         dialogue.addDialogue("Loaded Save File");
-        render("down");
+        refresh();
     }
 }

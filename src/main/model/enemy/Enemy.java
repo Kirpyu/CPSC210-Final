@@ -30,6 +30,7 @@ public abstract class Enemy {
     //EFFECTS: returns the line enemies state when they die
     public abstract String deathLine();
 
+    //EFFECTS: returns json object with enemy stats
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("name", name);

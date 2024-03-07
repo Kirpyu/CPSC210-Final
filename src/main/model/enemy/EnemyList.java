@@ -97,6 +97,7 @@ public class EnemyList {
         return tempList;
     }
 
+    // EFFECTS: returns an json object with current enemies
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("enemies", enemyToJson());
@@ -104,6 +105,7 @@ public class EnemyList {
 
     }
 
+    //EFFECTS: returns all current enemies as json array
     public JSONArray enemyToJson() {
         JSONArray jsonArray = new JSONArray();
 
