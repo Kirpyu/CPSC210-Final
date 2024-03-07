@@ -59,6 +59,15 @@ class EnemyListTest {
     }
 
     @Test
+    public void removeAllEnemiesTest() {
+        enemyList.addEnemy("Paladin");
+        enemyList.addEnemy("Rogue");
+        enemyList.addEnemy("Mage");
+        enemyList.removeAllEnemies();
+        assertEquals(0, enemyList.getCurrentEnemies().size());
+    }
+
+    @Test
     public void getCurrentEnemyTest() {
         enemyList.addEnemy("Paladin");
         assertEquals("Paladin", enemyList.getCurrentEnemy(0).getName());

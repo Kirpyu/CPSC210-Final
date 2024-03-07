@@ -1,5 +1,7 @@
 package model.items;
 
+import org.json.JSONObject;
+
 public class Item {
     protected String itemName;
     protected String abilityName;
@@ -60,6 +62,16 @@ public class Item {
 
     public void setDamage(int damage) {
         this.damage = damage;
+    }
+
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", itemName);
+        json.put("level", level);
+        json.put("ability", abilityName);
+        json.put("damage", damage);
+        return json;
+
     }
 }
 

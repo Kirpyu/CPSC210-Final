@@ -13,3 +13,5 @@ whether I intend to pursue game development/ similar projects.
 - As a user, I want to be able to open my inventory to see all acquired items.
 - As a user, I want to be able to kill enemies to gain gold and items.
 - As a user, I want to be able to fight random enemies
+- As a user, I want to be able to save my games progress (i.e. items, enemies)
+- As a user, I want to be able to load the progress that I have saved

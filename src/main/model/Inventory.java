@@ -1,6 +1,8 @@
 package model;
 
 import model.items.Item;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -75,6 +77,23 @@ public class Inventory {
             tempList.add("Level " + i.getLevel());
         }
         return tempList;
+    }
+
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("inventory", inventoryToJSon());
+        return json;
+
+    }
+
+    public JSONArray inventoryToJSon() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Item i : inventoryList) {
+            jsonArray.put(i.toJson());
+        }
+
+        return jsonArray;
     }
 
     //getter

@@ -8,7 +8,10 @@ import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import model.*;
 import model.enemy.EnemyList;
+import model.persistence.JsonReader;
+import model.persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -23,7 +26,7 @@ public class TerminalGame {
     private final ArrayList<String> listOfOptions; // determines list of options in options screen
     private final Shop shop; // holds a shop for players to purchase items in
     private final Player player; // holds the main player
-    private final Inventory inventory; // holds the players inventory
+    private Inventory inventory; // holds the players inventory
     private final EnemyList enemyList; // determines enemies that exist
     private final Dialogue dialogue; // determines dialogue behavior
 
@@ -31,6 +34,10 @@ public class TerminalGame {
     private final ShopUI shopUI; // holds behavior of shop screen
     private final AttackUI attackUI; // holds behavior of attack screen
 
+    // json
+    private static final String JSON_STORE = "./data/inventory.json";
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     //EFFECTS: Starts the game, shows current screen and creates list of options
     public TerminalGame() {
@@ -40,6 +47,8 @@ public class TerminalGame {
         listOfOptions.add("Inventory");
         listOfOptions.add("Shop");
         listOfOptions.add("Stats");
+        listOfOptions.add("Save");
+        listOfOptions.add("Load");
 
         currentScreen = "Options";
 //        waveNumber = 0;
@@ -55,6 +64,9 @@ public class TerminalGame {
         inventoryUI = new InventoryUI(inventory, this);
         shopUI = new ShopUI(shop, inventory, dialogue, this);
         attackUI = new AttackUI(player, enemyList, inventory, dialogue, this);
+
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
     }
 
     // MODIFIES: this
@@ -145,6 +157,7 @@ public class TerminalGame {
     // MODIFIES: this
     // EFFECTS: render depending on the direction of button pressed and
     // changes space bar key behavior depending on current screen
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public void render(String direction) throws IOException {
         screen.clear();
         switch (currentScreen) {
@@ -154,7 +167,7 @@ public class TerminalGame {
 
             case "Attack":
                 drawArrow(direction, enemyList.getEnemyNames());
-                drawMoreOptions(enemyList.getEnemiesHealth());
+                drawMoreOptions(enemyList.getEnemiesStats());
                 break;
 
             case "Inventory":
@@ -191,6 +204,14 @@ public class TerminalGame {
                 break;
             case 3:
                 swapScreen("Stats");
+                break;
+            case 4:
+                saveInventory();
+                break;
+            case 5:
+                loadInventory();
+                break;
+
         }
     }
 
@@ -270,5 +291,24 @@ public class TerminalGame {
         System.exit(0);
     }
 
+    private void saveInventory() {
+        try {
+            jsonWriter.open();
+            jsonWriter.writeInventory(inventory);
+            jsonWriter.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Saved");
+        }
+    }
 
+    // MODIFIES: this
+    // EFFECTS: loads inventory from file
+    private void loadInventory() {
+        try {
+            this.inventory = jsonReader.readInventory(inventory);
+            System.out.println("loaded");
+        } catch (IOException e) {
+            System.out.println("failin");
+        }
+    }
 }

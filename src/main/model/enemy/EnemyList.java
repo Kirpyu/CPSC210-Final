@@ -1,5 +1,9 @@
 package model.enemy;
 
+import model.items.Item;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class EnemyList {
@@ -47,6 +51,12 @@ public class EnemyList {
         currentEnemies.remove(enemy);
     }
 
+    //MODIFIES: this
+    //EFFECTS: removes all enemies in list
+    public void removeAllEnemies() {
+        currentEnemies.clear();
+    }
+
     //REQUIRES: i < currentEnemies.size
     //EFFECTS: returns selected enemy
     public Enemy getCurrentEnemy(int i) {
@@ -74,6 +84,34 @@ public class EnemyList {
         }
 
         return tempList;
+    }
+
+    // EFFECTS: returns all enemies current hp and attack with HP and ATK string added to the end
+    public ArrayList<String> getEnemiesStats() {
+        ArrayList<String> tempList = new ArrayList<>();
+
+        for (Enemy e: currentEnemies) {
+            tempList.add(e.getHealth() + "HP " + e.getAttack() + "ATK");
+        }
+
+        return tempList;
+    }
+
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("enemies", enemyToJson());
+        return json;
+
+    }
+
+    public JSONArray enemyToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Enemy e : currentEnemies) {
+            jsonArray.put(e.toJson());
+        }
+
+        return jsonArray;
     }
 
     //getter

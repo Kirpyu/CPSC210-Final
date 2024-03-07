@@ -1,6 +1,7 @@
 package model.enemy;
 
 import model.items.Item;
+import org.json.JSONObject;
 
 public abstract class Enemy {
     protected String name;
@@ -28,6 +29,16 @@ public abstract class Enemy {
 
     //EFFECTS: returns the line enemies state when they die
     public abstract String deathLine();
+
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("health", health);
+        json.put("attack", attack);
+        json.put("gold", goldDropped);
+        json.put("item", itemDropped);
+        return json;
+    }
 
 
 
