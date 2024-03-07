@@ -1,4 +1,4 @@
-package model.persistence;
+package persistence;
 
 import model.Inventory;
 import model.Player;

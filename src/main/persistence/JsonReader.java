@@ -1,4 +1,4 @@
-package model.persistence;
+package persistence;
 
 import model.Inventory;
 import model.Player;
@@ -74,7 +74,7 @@ public class JsonReader {
             } else if ((nextItem.has("enemies")) && (o instanceof EnemyList)) {
                 addEnemyList((EnemyList) o, nextItem);
                 break;
-            } else if (nextItem.has("player")) {
+            } else if (nextItem.has("player") && (o instanceof Player)) {
                 addPlayer((Player) o, nextItem);
                 break;
             }
@@ -89,6 +89,9 @@ public class JsonReader {
             JSONObject nextItem = (JSONObject) json;
             addItem(i, nextItem);
         }
+        
+        int gold = jsonObject.getInt("gold");
+        i.setGold(gold);
     }
 
     // MODIFIES: i

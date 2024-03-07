@@ -83,6 +83,7 @@ public class Inventory {
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("inventory", inventoryToJSon());
+        json.put("gold", getGold());
         return json;
     }
 

@@ -8,8 +8,8 @@ import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import model.*;
 import model.enemy.EnemyList;
-import model.persistence.JsonReader;
-import model.persistence.JsonWriter;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -353,6 +353,7 @@ public class TerminalGame {
             this.inventory = jsonReader.readInventory(inventory);
             this.enemyList = jsonReader.readEnemyList(enemyList);
             this.player = jsonReader.readPlayer(player);
+
         } catch (IOException e) {
             System.out.println("Fail");
         }

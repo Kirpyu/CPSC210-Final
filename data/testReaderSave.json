@@ -1,0 +1,30 @@
+{"save": [
+    {
+        "gold": 5,
+        "inventory": [
+            {
+                "damage": 3,
+                "level": 1,
+                "name": "Axe",
+                "ability": "Cleave"
+            },
+            {
+                "damage": 5,
+                "level": 1,
+                "name": "Dagger",
+                "ability": "Stab"
+            }
+        ]
+    },
+    {"enemies": [
+        {
+            "name": "Berserker",
+            "health": 5
+        },
+        {
+            "name": "Mage",
+            "health": 5
+        }
+    ]},
+    {"player": [{"health": 15}]}
+]}

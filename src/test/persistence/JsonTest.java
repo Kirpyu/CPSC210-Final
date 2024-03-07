@@ -1,5 +1,6 @@
 package persistence;
 
+import model.Inventory;
 import model.Player;
 import model.enemy.Enemy;
 import model.enemy.EnemyList;
@@ -23,5 +24,9 @@ public class JsonTest {
         assertEquals(level, item.getLevel());
         assertEquals(ability, item.getAbilityName());
         assertEquals(damage, item.getDamage());
+    }
+
+    protected void checkGold(int gold, Inventory inventory) {
+        assertEquals(gold, inventory.getGold());
     }
 }
