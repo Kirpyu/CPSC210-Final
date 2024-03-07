@@ -79,7 +79,7 @@ public class JsonReader {
             } else if ((nextItem.has("enemies")) && (o instanceof EnemyList)) {
                 addEnemyList((EnemyList) o, nextItem);
                 break;
-            } else if (nextItem.has("player") && (o instanceof Player)) {
+            } else if (nextItem.has("player")) {
                 addPlayer((Player) o, nextItem);
                 break;
             }

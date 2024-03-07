@@ -253,7 +253,7 @@ public class TerminalGame {
     // EFFECTS: changes the current screen to screen name, then refreshes the screen
     public void swapScreen(String screenName) throws IOException {
         currentScreen = screenName;
-        option = 1;
+        option = 0;
         refresh();
     }
 

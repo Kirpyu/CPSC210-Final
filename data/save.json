@@ -1,17 +1,30 @@
 {"save": [
     {
-        "gold": 0,
-        "inventory": []
+        "gold": 10,
+        "inventory": [
+            {
+                "damage": 5,
+                "level": 1,
+                "name": "Sword",
+                "ability": "Strike"
+            },
+            {
+                "damage": 5,
+                "level": 1,
+                "name": "Dagger",
+                "ability": "Stab"
+            }
+        ]
     },
     {"enemies": [
         {
-            "name": "Rogue",
+            "name": "Berserker",
             "health": 5
         },
         {
-            "name": "Warrior",
+            "name": "Paladin",
             "health": 10
         }
     ]},
-    {"player": [{"health": 20}]}
+    {"player": [{"health": 8}]}
 ]}
