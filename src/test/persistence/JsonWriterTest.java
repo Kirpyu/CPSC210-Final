@@ -17,7 +17,8 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class JsonReaderTest extends JsonTest {
+public class JsonWriterTest extends JsonTest {
+
     private EnemyList e;
     private ArrayList<String> enemyList;
     private ArrayList<Item> itemList;

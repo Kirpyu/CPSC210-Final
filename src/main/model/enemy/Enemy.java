@@ -35,9 +35,6 @@ public abstract class Enemy {
         JSONObject json = new JSONObject();
         json.put("name", name);
         json.put("health", health);
-        json.put("attack", attack);
-        json.put("gold", goldDropped);
-        json.put("item", itemDropped);
         return json;
     }
 

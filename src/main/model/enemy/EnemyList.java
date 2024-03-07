@@ -1,6 +1,5 @@
 package model.enemy;
 
-import model.items.Item;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
