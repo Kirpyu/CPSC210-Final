@@ -36,8 +36,8 @@ public class TerminalGame {
 
     // json
     private static final String JSON_STORE = "./data/save.json";
-    private JsonWriter jsonWriter;
-    private JsonReader jsonReader;
+    private final JsonWriter jsonWriter;
+    private final JsonReader jsonReader;
 
     //EFFECTS: Starts the game, shows current screen and creates list of options
     public TerminalGame() {
@@ -190,6 +190,40 @@ public class TerminalGame {
     }
 
     // MODIFIES: this
+    // EFFECTS: refreshes the screen with new lines
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
+    public void refresh() throws IOException {
+        screen.clear();
+        switch (currentScreen) {
+            case "Options":
+                drawArrow(listOfOptions);
+                break;
+
+            case "Attack":
+                drawArrow(enemyList.getEnemyNames());
+                drawMoreOptions(enemyList.getEnemiesStats());
+                break;
+
+            case "Inventory":
+                drawArrow(inventory.getInventoryNames());
+                drawMoreOptions(inventory.getInventoryLevels());
+                break;
+
+            case "Shop":
+                drawArrow(shop.getShopListNames());
+                drawMoreOptions(shop.getShopListCosts());
+                break;
+
+            case "Stats":
+                drawArrow(player.getStats());
+                break;
+        }
+
+        drawDialogue(dialogue.displayDialogue());
+        screen.refresh();
+    }
+
+    // MODIFIES: this
     // EFFECTS: finds cursors position, then executes whatever task is given
     public void executeOption() throws IOException {
         switch (option) {
@@ -230,6 +264,15 @@ public class TerminalGame {
         if (option == player.getStats().size() - 1) {
             swapScreen("Options");
         }
+    }
+
+    //EFFECTS: draws the pointer next to options, then draws options afterwards
+    public void drawArrow(ArrayList<String> options) {
+        TextGraphics text = screen.newTextGraphics();
+        text.setForegroundColor(TextColor.ANSI.WHITE);
+        text.putString(1, option, ">");
+        drawOptions(options);
+
     }
 
     //REQUIRES: direction is up or down
@@ -303,7 +346,7 @@ public class TerminalGame {
 
     // MODIFIES: this
     // EFFECTS: loads inventory from file
-    private void loadInventory() {
+    private void loadInventory() throws IOException {
         try {
             this.inventory = jsonReader.readInventory(inventory);
             this.enemyList = jsonReader.readEnemyList(enemyList);
@@ -312,5 +355,8 @@ public class TerminalGame {
         } catch (IOException e) {
             System.out.println("failin");
         }
+        dialogue.resetDialogue();
+        dialogue.addDialogue("Loaded Save File");
+        render("down");
     }
 }

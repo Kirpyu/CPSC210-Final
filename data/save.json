@@ -1,24 +1,51 @@
 {"save": [
     {"inventory": [
         {
-            "damage": 10,
-            "level": 4,
-            "name": "Staff",
-            "ability": "Cast"
-        },
-        {
             "damage": 3,
-            "level": 4,
+            "level": 2,
             "name": "Axe",
             "ability": "Cleave"
+        },
+        {
+            "damage": 5,
+            "level": 3,
+            "name": "Dagger",
+            "ability": "Stab"
+        },
+        {
+            "damage": 2,
+            "level": 1,
+            "name": "Shield",
+            "ability": "Slam"
+        },
+        {
+            "damage": 5,
+            "level": 2,
+            "name": "Sword",
+            "ability": "Strike"
+        },
+        {
+            "damage": 10,
+            "level": 2,
+            "name": "Staff",
+            "ability": "Cast"
         }
     ]},
-    {"enemies": [{
-        "gold": 5,
-        "item": "model.items.Shield@636be97c",
-        "attack": 1,
-        "name": "Paladin",
-        "health": 5
-    }]},
-    {"health": 19}
+    {"enemies": [
+        {
+            "gold": 5,
+            "item": "model.items.Staff@3d680b5a",
+            "attack": 5,
+            "name": "Mage",
+            "health": 5
+        },
+        {
+            "gold": 5,
+            "item": "model.items.Staff@4b5d6a01",
+            "attack": 5,
+            "name": "Mage",
+            "health": 5
+        }
+    ]},
+    {"player": [{"health": 15}]}
 ]}

@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 
 // Represents a reader that reads workroom from JSON data stored in file
 public class JsonReader {
-    private String source;
+    private final String source;
 
     // EFFECTS: constructs reader to read from source file
     public JsonReader(String source) {
@@ -48,7 +48,7 @@ public class JsonReader {
         StringBuilder contentBuilder = new StringBuilder();
 
         try (Stream<String> stream = Files.lines(Paths.get(source), StandardCharsets.UTF_8)) {
-            stream.forEach(s -> contentBuilder.append(s));
+            stream.forEach(contentBuilder::append);
         }
 
         return contentBuilder.toString();
@@ -73,7 +73,6 @@ public class JsonReader {
                 break;
             } else if ((nextItem.has("enemies")) && (o instanceof EnemyList)) {
                 addEnemyList((EnemyList) o, nextItem);
-
                 break;
             } else if (nextItem.has("player")) {
                 addPlayer((Player) o, nextItem);
@@ -136,6 +135,6 @@ public class JsonReader {
     private void addStats(Player p, JSONObject jsonObject) {
         int currentHP = jsonObject.getInt("health");
 
-        p.damagePlayer(currentHP);
+        p.setCurrentHealth(currentHP);
     }
 }

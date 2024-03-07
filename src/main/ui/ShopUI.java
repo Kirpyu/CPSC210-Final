@@ -34,11 +34,11 @@ public class ShopUI {
                 inventory.setGold(inventory.getGold() - hoveredItem.getCost());
                 dialogue.addDialogue("Purchased " + hoveredItem.getItemName() + ", "
                         + inventory.getGold() + "G remaining");
-                terminalGame.swapScreen("Shop");
+                terminalGame.refresh();
             } else {
                 int missingGold = hoveredItem.getCost() - inventory.getGold();
                 dialogue.addDialogue("Can't purchase " + hoveredItem.getItemName() + ", missing " + missingGold + "G");
-                terminalGame.swapScreen("Shop");
+                terminalGame.refresh();
             }
         }
     }
