@@ -15,3 +15,6 @@ whether I intend to pursue game development/ similar projects.
 - As a user, I want to be able to fight random enemies
 - As a user, I want to be able to save my games progress (i.e. items, enemies)
 - As a user, I want to be able to load the progress that I have saved
+
+## **JSON**
+Referenced from: https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo

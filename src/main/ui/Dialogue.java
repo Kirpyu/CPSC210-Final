@@ -12,6 +12,7 @@ public class Dialogue {
     ArrayList<String> displayedDialogue; // holds dialogue in the screen
     ArrayList<String> currentDialogue; // holds accumulated dialogue that's backlogged
 
+    //creates a dialogue box responsible for in game dialogue
     public Dialogue(Player player, EnemyList enemyList) {
         this.player = player;
         this.enemyList = enemyList;

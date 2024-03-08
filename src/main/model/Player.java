@@ -14,7 +14,7 @@ public class Player {
     private int damage; // damage after considering equipped item, damage dealt
     private Item equippedItem;
 
-    // Creates a player
+    // Creates a player with health, damage, and item
     public Player() {
         maxHealth = 20;
         currentHealth = maxHealth;
