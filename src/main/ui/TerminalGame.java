@@ -1,12 +1,9 @@
 package ui;
 
-import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
-import com.googlecode.lanterna.gui2.Border;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
-import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import model.*;
 import model.enemy.EnemyList;
 import persistence.JsonReader;
@@ -50,9 +47,7 @@ public class TerminalGame extends JFrame {
     //panels
     private JPanel graphicPanel; // this will be a card panel that changes depending on current screen
     private JPanel textPanel;
-    private JPanel cardPanel;
     private JPanel hudPanel;
-    private JPanel menuPanel;
     private GridBagConstraints constraints;
     private JPanel mainPanel;
 
@@ -60,7 +55,6 @@ public class TerminalGame extends JFrame {
     public TerminalGame() {
         listOfOptions = new ArrayList<>();
         currentScreen = "Options";
-        menuPanel = new JPanel(new GridBagLayout());
 
         player = new Player();
         shop = new Shop();
@@ -78,7 +72,6 @@ public class TerminalGame extends JFrame {
         graphicPanel = new JPanel();
         hudPanel = new JPanel();
         textPanel = new JPanel();
-        cardPanel = new JPanel(new CardLayout());
         constraints = new GridBagConstraints();
         mainPanel = null;
     }
@@ -110,7 +103,7 @@ public class TerminalGame extends JFrame {
     }
 
     //EFFECTS: creates graphic panel box and sets it to proper grid position
-    private void createGraphicPanel(Container pane) {
+    private void createGraphicPanel() {
         constraints = new GridBagConstraints();
         graphicPanel.setPreferredSize(new Dimension(600,300));
         graphicPanel.setBackground(Color.black);
@@ -124,10 +117,10 @@ public class TerminalGame extends JFrame {
         label.setForeground(Color.white);
         label.setFont(new Font("Arial", Font.BOLD, 14));
         graphicPanel.add(label);
-        pane.add(graphicPanel, constraints);
+        mainPanel.add(graphicPanel, constraints);
     }
 
-    private void createHudPanel(Container pane) {
+    private void createHudPanel() {
         constraints = new GridBagConstraints();
         // make a for loop of all panels, initialize them and add them
         hudPanel.setPreferredSize(new Dimension(600,50));
@@ -142,11 +135,11 @@ public class TerminalGame extends JFrame {
         label.setForeground(Color.white);
         label.setFont(new Font("Arial", Font.BOLD, 14));
         hudPanel.add(label);
-        pane.add(hudPanel, constraints);
+        mainPanel.add(hudPanel, constraints);
     }
 
     //EFFECTS: creates text panel box and sets it to proper grid position
-    private void createTextPanel(Container pane) {
+    private void createTextPanel() {
         constraints = new GridBagConstraints();
         textPanel.setPreferredSize(new Dimension(600,150));
         textPanel.setBackground(Color.black);
@@ -157,15 +150,15 @@ public class TerminalGame extends JFrame {
         constraints.gridy = 0;
         constraints.gridwidth = 3;
 
-        pane.add(textPanel, constraints);
+        mainPanel.add(textPanel, constraints);
     }
 
     private void addComponentsToPane(Container pane) {
-        createGraphicPanel(pane);
+        createGraphicPanel();
         drawOptions(listOfOptions);
 
-        createHudPanel(pane);
-        createTextPanel(pane);
+        createHudPanel();
+        createTextPanel();
     }
 
     private void createAndShowGUI() {
@@ -175,12 +168,12 @@ public class TerminalGame extends JFrame {
         frame.setPreferredSize(new Dimension(800, 600));
         frame.setResizable(false);
 
-        menuPanel = new JPanel(new GridBagLayout());
-        menuPanel.setBackground(Color.black);
-        frame.add(menuPanel);
+        mainPanel = new JPanel(new GridBagLayout());
+        mainPanel.setBackground(Color.black);
+        frame.add(mainPanel);
 
         //Set up the content pane.
-        addComponentsToPane(menuPanel);
+        addComponentsToPane(mainPanel);
 
         //Display the window.
         frame.pack();
