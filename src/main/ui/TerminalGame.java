@@ -14,8 +14,10 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.*;
@@ -50,6 +52,8 @@ public class TerminalGame extends JFrame {
     private JPanel hudPanel;
     private GridBagConstraints constraints;
     private JPanel mainPanel;
+    private Font customFont;
+    private Font bigCustomFont;
 
     //EFFECTS: Starts the game, shows current screen and creates list of options
     public TerminalGame() {
@@ -73,16 +77,39 @@ public class TerminalGame extends JFrame {
         hudPanel = new JPanel();
         textPanel = new JPanel();
         constraints = new GridBagConstraints();
-        mainPanel = null;
+        mainPanel = new JPanel(new GridBagLayout());
+
     }
 
     // MODIFIES: this
     // EFFECTS: starts the game
     public void start() throws IOException {
+        loadFont();
         initOptions();
         createAndShowGUI();
         attackUI.createEnemies(2);
+        //test, remove after
+        JLabel label = new JLabel("HP: 20");
+        label.setForeground(Color.white);
+        label.setFont(bigCustomFont);
+        hudPanel.add(label);
 //        dialogue.start();
+    }
+
+    public void loadFont() {
+//code..
+//        final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        final InputStream is = TerminalGame.class.getResourceAsStream("PixelifySans-VariableFont_wght.ttf");
+        final InputStream is2 = TerminalGame.class.getResourceAsStream("PixelifySans-Bold.ttf");
+
+        try {
+            customFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(14f);
+            bigCustomFont = Font.createFont(Font.TRUETYPE_FONT, is2).deriveFont(24f);
+        } catch (FontFormatException e2) {
+            e2.printStackTrace();
+        } catch (IOException e2) {
+            e2.printStackTrace();
+        }
     }
 
     private void initOptions() {
@@ -100,15 +127,11 @@ public class TerminalGame extends JFrame {
         graphicPanel.setPreferredSize(new Dimension(600,300));
         graphicPanel.setBackground(Color.black);
         graphicPanel.setLayout(new BoxLayout(graphicPanel, BoxLayout.PAGE_AXIS));
-        graphicPanel.setBorder(BorderFactory.createLineBorder(Color.white));
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 0;
-        constraints.gridy = 2;
+        constraints.gridy = 1;
         constraints.gridwidth = 3;
-        JLabel label = new JLabel("HP");
-        label.setForeground(Color.white);
-        label.setFont(new Font("Arial", Font.BOLD, 14));
-        graphicPanel.add(label);
+
         mainPanel.add(graphicPanel, constraints);
     }
 
@@ -118,15 +141,10 @@ public class TerminalGame extends JFrame {
         hudPanel.setPreferredSize(new Dimension(600,50));
         hudPanel.setBackground(Color.black);
         hudPanel.setLayout(new BoxLayout(hudPanel, BoxLayout.PAGE_AXIS));
-        hudPanel.setBorder(BorderFactory.createLineBorder(Color.white));
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 0;
-        constraints.gridy = 1;
+        constraints.gridy = 0;
         constraints.gridwidth = 3;
-        JLabel label = new JLabel("HP");
-        label.setForeground(Color.white);
-        label.setFont(new Font("Arial", Font.BOLD, 14));
-        hudPanel.add(label);
         mainPanel.add(hudPanel, constraints);
     }
 
@@ -139,12 +157,13 @@ public class TerminalGame extends JFrame {
         textPanel.setBorder(BorderFactory.createLineBorder(Color.white));
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 0;
-        constraints.gridy = 0;
+        constraints.gridy = 2;
         constraints.gridwidth = 3;
 
         mainPanel.add(textPanel, constraints);
     }
 
+    // EFFECTS: creates all panels and adds them to mainpanel
     private void addComponentsToPane() {
         createGraphicPanel();
         createHudPanel();
@@ -158,7 +177,6 @@ public class TerminalGame extends JFrame {
         frame.setPreferredSize(new Dimension(800, 600));
         frame.setResizable(false);
 
-        mainPanel = new JPanel(new GridBagLayout());
         mainPanel.setBackground(Color.black);
         frame.add(mainPanel);
 
@@ -180,49 +198,6 @@ public class TerminalGame extends JFrame {
 
         //Set up the content pane.
         addComponentsToPane();
-    }
-
-
-
-    // EFFECTS: processes user input and progresses per input user makes (actions instead of ticks)
-    // until process ends
-    private void handleUserInput() throws IOException {
-        boolean keepGoing = true;
-        KeyStroke input;
-
-        while (keepGoing) {
-            input = screen.readInput();
-            if (currentScreen.equals("End")) {
-                keepGoing = false;
-            } else {
-                processInput(input);
-            }
-        }
-
-        drawEndScreen();
-    }
-
-    //REQUIRES: type is one of: arrowup, down, or spacebar
-    //MODIFIES: this
-    //EFFECTS: checks input, then renders the game according to input
-    private void processInput(KeyStroke type) throws IOException {
-        switch (type.getKeyType()) {
-            case ArrowUp:
-                render("up");
-                break;
-
-            case ArrowDown:
-                render("down");
-                break;
-
-            case Character:
-                if (type.getCharacter() == ' ') {
-                    executeCurrentScreen();
-                }
-                break;
-            case Escape:
-                drawEndScreen();
-        }
     }
 
     // MODIFIES: this
@@ -249,44 +224,44 @@ public class TerminalGame extends JFrame {
         }
     }
 
-    // REQUIRES: direction is either up or down
-    // MODIFIES: this
-    // EFFECTS: render depending on the direction of button pressed and
-    // changes space bar key behavior depending on current screen
-    public void render(String direction) throws IOException {
-        screen.clear();
-        switch (currentScreen) {
-            case "Options":
-                drawArrow(direction, listOfOptions);
-                break;
-
-            case "Attack":
-                drawArrow(direction, enemyList.getEnemyNames());
-                drawMoreOptions(enemyList.getEnemiesStats());
-                break;
-
-            case "Inventory":
-                drawArrow(direction, inventory.getInventoryNames());
-                drawMoreOptions(inventory.getInventoryLevels());
-                break;
-
-            case "Shop":
-                drawArrow(direction, shop.getShopListNames());
-                drawMoreOptions(shop.getShopListCosts());
-                break;
-
-            case "Stats":
-                drawArrow(direction, player.getStats());
-                break;
-        }
-
-        drawDialogue(dialogue.displayDialogue());
-        screen.refresh();
-    }
+//    // REQUIRES: direction is either up or down
+//    // MODIFIES: this
+//    // EFFECTS: render depending on the direction of button pressed and
+//    // changes space bar key behavior depending on current screen
+//    public void render(String direction) throws IOException {
+//        screen.clear();
+//        switch (currentScreen) {
+//            case "Options":
+//                drawArrow(direction, listOfOptions);
+//                break;
+//
+//            case "Attack":
+//                drawArrow(direction, enemyList.getEnemyNames());
+//                drawMoreOptions(enemyList.getEnemiesStats());
+//                break;
+//
+//            case "Inventory":
+//                drawArrow(direction, inventory.getInventoryNames());
+//                drawMoreOptions(inventory.getInventoryLevels());
+//                break;
+//
+//            case "Shop":
+//                drawArrow(direction, shop.getShopListNames());
+//                drawMoreOptions(shop.getShopListCosts());
+//                break;
+//
+//            case "Stats":
+//                drawArrow(direction, player.getStats());
+//                break;
+//        }
+//
+//        drawDialogue(dialogue.displayDialogue());
+//        screen.refresh();
+//    }
 
     // MODIFIES: this
     // EFFECTS: refreshes the screen with new lines
-    public void refresh() throws IOException {
+    public void refresh() {
         switch (currentScreen) {
             case "Options":
                 drawArrow(listOfOptions);
@@ -340,7 +315,7 @@ public class TerminalGame extends JFrame {
     // REQUIRES: valid screenname (options, shop, etc.)
     // MODIFIES: this
     // EFFECTS: changes the current screen to screen name, then refreshes the screen
-    public void swapScreen(String screenName) throws IOException {
+    public void swapScreen(String screenName) {
         currentScreen = screenName;
         option = 0;
         refresh();
@@ -348,7 +323,7 @@ public class TerminalGame extends JFrame {
 
     //MODIFIES: this
     //EFFECTS: pressing exit exits the stats page
-    public void executeStats() throws IOException {
+    public void executeStats() {
         if (option == player.getStats().size() - 1) {
             swapScreen("Options");
         }
@@ -383,28 +358,6 @@ public class TerminalGame extends JFrame {
         }
     }
 
-    //REQUIRES: direction is up or down
-    //EFFECTS: draws the pointer next to options, then draws options afterwards
-    public void drawArrow(String direction, ArrayList<String> options) {
-        TextGraphics text = screen.newTextGraphics();
-        text.setForegroundColor(TextColor.ANSI.WHITE);
-        switch (direction) {
-            case "up":
-                if (option != 0) {
-                    option--;
-                    executeKey();
-                }
-                break;
-
-            case "down":
-                if (option != options.size() - 1) {
-                    option++;
-                    executeKey();
-                }
-                break;
-        }
-    }
-
     public void executeKey() {
         JButton currentButton = (JButton) textPanel.getComponent(option);
         currentButton.requestFocus();
@@ -422,6 +375,7 @@ public class TerminalGame extends JFrame {
             button.setBackground(Color.black);
             button.setBorder(BorderFactory.createLineBorder(Color.black));
             button.setOpaque(true);
+            button.setFont(customFont);
 
             button.addKeyListener(new KeyAdapter() {
                 @Override
@@ -479,7 +433,7 @@ public class TerminalGame extends JFrame {
     }
 
     //EFFECTS: saves inventory, enemylist, and player to the jSon file
-    private void save() throws IOException {
+    private void save() {
         try {
             jsonWriter.open();
             jsonWriter.write(inventory, enemyList, player);
@@ -494,7 +448,7 @@ public class TerminalGame extends JFrame {
 
     // MODIFIES: this
     // EFFECTS: loads all objects from save file
-    private void load() throws IOException {
+    private void load() {
         try {
             this.inventory = jsonReader.readInventory(inventory);
             this.enemyList = jsonReader.readEnemyList(enemyList);
