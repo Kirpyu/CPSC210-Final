@@ -81,16 +81,8 @@ public class TerminalGame extends JFrame {
     public void start() throws IOException {
         initOptions();
         createAndShowGUI();
-
-//
-//        option = 1;
-//
-//        attackUI.createEnemies(2);
+        attackUI.createEnemies(2);
 //        dialogue.start();
-//        render("up");
-//
-//        screen.refresh();
-//        handleUserInput();
     }
 
     private void initOptions() {
@@ -153,10 +145,8 @@ public class TerminalGame extends JFrame {
         mainPanel.add(textPanel, constraints);
     }
 
-    private void addComponentsToPane(Container pane) {
+    private void addComponentsToPane() {
         createGraphicPanel();
-        drawOptions(listOfOptions);
-
         createHudPanel();
         createTextPanel();
     }
@@ -173,13 +163,23 @@ public class TerminalGame extends JFrame {
         frame.add(mainPanel);
 
         //Set up the content pane.
-        addComponentsToPane(mainPanel);
+        drawOptions(listOfOptions);
+        addComponentsToPane();
 
         //Display the window.
         frame.pack();
         setLocationRelativeTo(null);
 
         frame.setVisible(true);
+    }
+
+    private void refreshPanels() {
+        textPanel.removeAll();
+        graphicPanel.removeAll();
+        hudPanel.removeAll();
+
+        //Set up the content pane.
+        addComponentsToPane();
     }
 
 
@@ -356,12 +356,9 @@ public class TerminalGame extends JFrame {
 
     //EFFECTS: draws the pointer next to options, then draws options afterwards
     public void drawArrow(ArrayList<String> options) {
-//        TextGraphics text = screen.newTextGraphics();
-//        text.setForegroundColor(TextColor.ANSI.WHITE);
-//        text.putString(1, option, ">");
+        drawOptions(options);
         JButton currentButton = (JButton) textPanel.getComponent(option);
         currentButton.requestFocus();
-        drawOptions(options);
     }
 
     public void drawArrow(KeyEvent e, ArrayList<String> options) throws IOException {
@@ -417,7 +414,7 @@ public class TerminalGame extends JFrame {
     // EFFECTS: displays all given options
     @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public void drawOptions(ArrayList<String> options) {
-        textPanel.removeAll();
+        refreshPanels();
         for (int i = 0; i < options.size(); i++) {
             JButton button = new JButton(options.get(i));
 
