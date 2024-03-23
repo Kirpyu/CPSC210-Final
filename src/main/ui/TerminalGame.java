@@ -52,8 +52,6 @@ public class TerminalGame extends JFrame {
     private JPanel hudPanel;
     private GridBagConstraints constraints;
     private JPanel mainPanel;
-    private Font customFont;
-    private Font bigCustomFont;
 
     //EFFECTS: Starts the game, shows current screen and creates list of options
     public TerminalGame() {
@@ -84,32 +82,27 @@ public class TerminalGame extends JFrame {
     // MODIFIES: this
     // EFFECTS: starts the game
     public void start() throws IOException {
-        loadFont();
         initOptions();
         createAndShowGUI();
         attackUI.createEnemies(2);
         //test, remove after
         JLabel label = new JLabel("HP: 20");
         label.setForeground(Color.white);
-        label.setFont(bigCustomFont);
+        label.setFont(loadFont("PixelifySans-Bold.ttf", 24f));
         hudPanel.add(label);
 //        dialogue.start();
     }
 
-    public void loadFont() {
-//code..
-//        final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        final InputStream is = TerminalGame.class.getResourceAsStream("PixelifySans-VariableFont_wght.ttf");
-        final InputStream is2 = TerminalGame.class.getResourceAsStream("PixelifySans-Bold.ttf");
-
+    public static Font loadFont(String path, float size) {
         try {
-            customFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(14f);
-            bigCustomFont = Font.createFont(Font.TRUETYPE_FONT, is2).deriveFont(24f);
-        } catch (FontFormatException e2) {
-            e2.printStackTrace();
-        } catch (IOException e2) {
-            e2.printStackTrace();
+            InputStream fileStream = TerminalGame.class.getResourceAsStream(path);
+            Font myFont = Font.createFont(Font.TRUETYPE_FONT, fileStream);
+            return myFont.deriveFont(Font.PLAIN, size);
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+            System.exit(1);
         }
+        return null;
     }
 
     private void initOptions() {
@@ -375,7 +368,7 @@ public class TerminalGame extends JFrame {
             button.setBackground(Color.black);
             button.setBorder(BorderFactory.createLineBorder(Color.black));
             button.setOpaque(true);
-            button.setFont(customFont);
+            button.setFont(loadFont("PixelifySans-VariableFont_wght.ttf", 14f));
 
             button.addKeyListener(new KeyAdapter() {
                 @Override
