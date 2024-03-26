@@ -7,6 +7,7 @@ import model.enemy.*;
 import java.io.IOException;
 import java.util.Random;
 
+// Creates screen for attacking
 public class AttackUI {
     private final EnemyList enemyList;
     private final Player player;
@@ -14,7 +15,7 @@ public class AttackUI {
     private final Dialogue dialogue;
     private final TerminalGame terminalGame;
 
-    // Creates screen for attacking
+    // initiates attack screen
     public AttackUI(Player player, EnemyList enemyList, Inventory inventory, Dialogue dialogue,
                     TerminalGame terminalGame) {
         this.player = player;
@@ -25,13 +26,14 @@ public class AttackUI {
     }
 
     //MODIFIES: terminalGame
-    //EFFECTS: exit if cursor hovers exit, otherwise attack the enemy hovered
+    //EFFECTS: exit if cursor hovers exit, otherwise attack the enemy hovered and show dialogue
     public void executeAttack(int option) throws IOException {
         if (option == enemyList.getCurrentEnemies().size()) {
             terminalGame.swapScreen("Options");
         } else {
             attackEnemy(enemyList.getCurrentEnemy(option));
-            terminalGame.swapScreen("Options");
+            terminalGame.swapScreen("Dialogue");
+
         }
     }
 

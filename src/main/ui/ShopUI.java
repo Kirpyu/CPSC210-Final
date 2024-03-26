@@ -28,13 +28,15 @@ public class ShopUI {
         if (option == shop.getShopList().size()) {
             terminalGame.swapScreen("Options");
         } else {
+            dialogue.resetDialogue();
             Item hoveredItem = shop.getItem(option);
             if (shop.canPurchase(inventory.getGold(), hoveredItem.getCost())) {
                 inventory.addInventory(hoveredItem);
                 inventory.setGold(inventory.getGold() - hoveredItem.getCost());
                 dialogue.addDialogue("Purchased " + hoveredItem.getItemName() + ", "
                         + inventory.getGold() + "G remaining");
-                terminalGame.refresh();
+
+                terminalGame.swapScreen("Dialogue");
             } else {
                 int missingGold = hoveredItem.getCost() - inventory.getGold();
                 dialogue.addDialogue("Can't purchase " + hoveredItem.getItemName() + ", missing " + missingGold + "G");

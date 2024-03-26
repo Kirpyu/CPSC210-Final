@@ -16,7 +16,7 @@ public class InventoryUI {
 
     //MODIFIES: terminalGame
     //EFFECTS: swaps screen to options if cursor hovers exit
-    public void executeInventory(int option) throws IOException {
+    public void executeInventory(int option) {
         if (option == inventory.getInventory().size() + 1) {
             terminalGame.swapScreen("Options");
         } else {

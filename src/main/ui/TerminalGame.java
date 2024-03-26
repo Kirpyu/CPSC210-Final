@@ -1,9 +1,7 @@
 package ui;
 
-import com.googlecode.lanterna.TextColor;
-import com.googlecode.lanterna.graphics.TextGraphics;
-import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.screen.Screen;
+
+
 import model.*;
 import model.enemy.EnemyList;
 import persistence.JsonReader;
@@ -13,8 +11,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,7 +21,6 @@ import java.awt.*;
 //RPG Game
 public class TerminalGame extends JFrame {
 
-    private Screen screen; // displays the screen
     private String currentScreen; // holds a string for what the current screen is
     private int option; // determines where the cursor or > is
 
@@ -46,11 +41,16 @@ public class TerminalGame extends JFrame {
     private final JsonWriter jsonWriter;
     private final JsonReader jsonReader;
 
+    //hud
+    private JLabel hudHP;
+
     //panels
     private JPanel graphicPanel; // this will be a card panel that changes depending on current screen
     private JPanel textPanel;
     private JPanel hudPanel;
     private GridBagConstraints constraints;
+    private JSplitPane splitPanel;
+    private JPanel moreTextPanel;
     private JPanel mainPanel;
 
     //EFFECTS: Starts the game, shows current screen and creates list of options
@@ -74,6 +74,8 @@ public class TerminalGame extends JFrame {
         graphicPanel = new JPanel();
         hudPanel = new JPanel();
         textPanel = new JPanel();
+        moreTextPanel = new JPanel();
+        splitPanel = new JSplitPane();
         constraints = new GridBagConstraints();
         mainPanel = new JPanel(new GridBagLayout());
 
@@ -81,18 +83,16 @@ public class TerminalGame extends JFrame {
 
     // MODIFIES: this
     // EFFECTS: starts the game
-    public void start() throws IOException {
+    public void start() {
         initOptions();
         createAndShowGUI();
         attackUI.createEnemies(2);
         //test, remove after
-        JLabel label = new JLabel("HP: 20");
-        label.setForeground(Color.white);
-        label.setFont(loadFont("PixelifySans-Bold.ttf", 24f));
-        hudPanel.add(label);
-//        dialogue.start();
+        dialogue.start();
+        swapScreen("Dialogue");
     }
 
+    // EFFECTS: loads font for use
     public static Font loadFont(String path, float size) {
         try {
             InputStream fileStream = TerminalGame.class.getResourceAsStream(path);
@@ -100,11 +100,11 @@ public class TerminalGame extends JFrame {
             return myFont.deriveFont(Font.PLAIN, size);
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
-            System.exit(1);
         }
         return null;
     }
 
+    // EFFECTS: creates all options for the main menu
     private void initOptions() {
         listOfOptions.add("Attack");
         listOfOptions.add("Inventory");
@@ -129,6 +129,8 @@ public class TerminalGame extends JFrame {
     }
 
     private void createHudPanel() {
+        hudPanel.removeAll();
+
         constraints = new GridBagConstraints();
         // make a for loop of all panels, initialize them and add them
         hudPanel.setPreferredSize(new Dimension(600,50));
@@ -138,6 +140,13 @@ public class TerminalGame extends JFrame {
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.gridwidth = 3;
+
+
+        hudHP = new JLabel("HP: " + player.getCurrentHealth() + "/" + player.getMaxHealth());
+        hudHP.setForeground(Color.white);
+        hudHP.setFont(loadFont("PixelifySans-Bold.ttf", 24f));
+        hudPanel.add(hudHP);
+
         mainPanel.add(hudPanel, constraints);
     }
 
@@ -163,6 +172,8 @@ public class TerminalGame extends JFrame {
         createTextPanel();
     }
 
+
+    // EFFECTS: creates the frame and panels for the gmaes, then shows them
     private void createAndShowGUI() {
         //Create and set up the window.
         JFrame frame = new JFrame("Game");
@@ -212,8 +223,9 @@ public class TerminalGame extends JFrame {
             case "Stats":
                 executeStats();
                 break;
-            case "End":
-                System.exit(0);
+            case "Dialogue":
+                swapScreen("Options");
+                break;
         }
     }
 
@@ -275,14 +287,16 @@ public class TerminalGame extends JFrame {
             case "Stats":
                 drawArrow(player.getStats());
                 break;
+// must have at least one dialogue or button, else space bar won't be executed
+            case "Dialogue":
+                drawArrow(dialogue.displayDialogue());
+                break;
         }
-
-//        drawDialogue(dialogue.displayDialogue());
     }
 
     // MODIFIES: this
     // EFFECTS: finds cursors position, then executes whatever task is given
-    public void executeOption() throws IOException {
+    public void executeOption() {
         switch (option) {
             case 0:
                 swapScreen("Attack");
@@ -305,7 +319,7 @@ public class TerminalGame extends JFrame {
         }
     }
 
-    // REQUIRES: valid screenname (options, shop, etc.)
+    // REQUIRES: valid screen name (options, shop, etc.)
     // MODIFIES: this
     // EFFECTS: changes the current screen to screen name, then refreshes the screen
     public void swapScreen(String screenName) {
@@ -315,7 +329,7 @@ public class TerminalGame extends JFrame {
     }
 
     //MODIFIES: this
-    //EFFECTS: pressing exit exits the stats page
+    //EFFECTS: creates statistics panel for player
     public void executeStats() {
         if (option == player.getStats().size() - 1) {
             swapScreen("Options");
@@ -329,6 +343,7 @@ public class TerminalGame extends JFrame {
         currentButton.requestFocus();
     }
 
+    //EFFECTS: draws the pointer next to options depending on key pressed, then draws options afterwards
     public void drawArrow(KeyEvent e, ArrayList<String> options) throws IOException {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
@@ -400,38 +415,15 @@ public class TerminalGame extends JFrame {
         }
     }
 
-    // REQUIRES: option >= 0
-    // EFFECTS: displays more options towards the right of the screen
-    public void drawMoreOptions(ArrayList<String> options) {
-        for (int i = 0; i < options.size(); i++) {
-            TextGraphics text = screen.newTextGraphics();
-            text.setForegroundColor(TextColor.ANSI.WHITE);
-            text.putString(15, i, options.get(i));
-        }
-    }
-
-    // REQUIRES: option >= 0
-    // EFFECTS: draws dialogue at the bottom of the screen
-    public void drawDialogue(ArrayList<String> options) {
-        for (int i = 0; i < options.size(); i++) {
-            TextGraphics text = screen.newTextGraphics();
-            text.setForegroundColor(TextColor.ANSI.WHITE);
-            text.putString(1, 10 + i, options.get(i));
-        }
-    }
-
-    //EFFECTS: exits game
-    public void drawEndScreen() {
-        System.exit(0);
-    }
-
     //EFFECTS: saves inventory, enemylist, and player to the jSon file
     private void save() {
         try {
             jsonWriter.open();
             jsonWriter.write(inventory, enemyList, player);
             jsonWriter.close();
-            dialogue.addDialogue("Saved File");
+            dialogue.resetDialogue();
+            dialogue.addDialogue("Saved File!");
+            swapScreen("Dialogue");
 
         } catch (FileNotFoundException e) {
             System.out.println("Error");
@@ -452,7 +444,13 @@ public class TerminalGame extends JFrame {
         }
 
         dialogue.resetDialogue();
-        dialogue.addDialogue("Loaded Save File");
+        dialogue.addDialogue("Loaded Save File!");
+        swapScreen("Dialogue");
         refresh();
+    }
+
+    //EFFECTS: exits game
+    public void drawEndScreen() {
+        System.exit(1);
     }
 }
