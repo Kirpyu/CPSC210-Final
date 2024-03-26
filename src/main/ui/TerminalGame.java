@@ -71,6 +71,8 @@ public class TerminalGame extends JFrame {
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
 
+        hudHP = new JLabel();
+
         graphicPanel = new JPanel();
         hudPanel = new JPanel();
         textPanel = new JPanel();
@@ -129,10 +131,7 @@ public class TerminalGame extends JFrame {
     }
 
     private void createHudPanel() {
-        hudPanel.removeAll();
-
         constraints = new GridBagConstraints();
-        // make a for loop of all panels, initialize them and add them
         hudPanel.setPreferredSize(new Dimension(600,50));
         hudPanel.setBackground(Color.black);
         hudPanel.setLayout(new BoxLayout(hudPanel, BoxLayout.PAGE_AXIS));
@@ -141,13 +140,16 @@ public class TerminalGame extends JFrame {
         constraints.gridy = 0;
         constraints.gridwidth = 3;
 
-
         hudHP = new JLabel("HP: " + player.getCurrentHealth() + "/" + player.getMaxHealth());
         hudHP.setForeground(Color.white);
         hudHP.setFont(loadFont("PixelifySans-Bold.ttf", 24f));
         hudPanel.add(hudHP);
 
         mainPanel.add(hudPanel, constraints);
+    }
+
+    public void updateHudPanel() {
+        hudHP.setText("HP: " + player.getCurrentHealth() + "/" + player.getMaxHealth());
     }
 
     //EFFECTS: creates text panel box and sets it to proper grid position
@@ -198,10 +200,10 @@ public class TerminalGame extends JFrame {
     private void refreshPanels() {
         textPanel.removeAll();
         graphicPanel.removeAll();
-        hudPanel.removeAll();
 
-        //Set up the content pane.
-        addComponentsToPane();
+        createGraphicPanel();
+        updateHudPanel();
+        createTextPanel();
     }
 
     // MODIFIES: this
@@ -376,6 +378,7 @@ public class TerminalGame extends JFrame {
     @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public void drawOptions(ArrayList<String> options) {
         refreshPanels();
+
         for (int i = 0; i < options.size(); i++) {
             JButton button = new JButton(options.get(i));
 
