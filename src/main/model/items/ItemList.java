@@ -2,6 +2,7 @@ package model.items;
 
 import java.util.ArrayList;
 
+// holds all items
 public class ItemList {
     private final ArrayList<Item> listOfItems; // a list of all items that exist
 

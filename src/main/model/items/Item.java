@@ -2,6 +2,7 @@ package model.items;
 
 import org.json.JSONObject;
 
+// creates an item class that can be modified into a default weapon or custom weapon
 public class Item {
     protected String itemName;
     protected String abilityName;

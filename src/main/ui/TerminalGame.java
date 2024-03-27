@@ -191,6 +191,7 @@ public class TerminalGame extends JFrame {
         mainPanel.add(moreTextPanel, constraints);
     }
 
+    //MODIFIES: this
     //EFFECTS: creates a picture using the given file path, then adds it to the graphic panel
     public void createImage(String path) {
 
@@ -200,7 +201,6 @@ public class TerminalGame extends JFrame {
         picLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         characterPanel.add(picLabel);
-
     }
 
 
@@ -215,6 +215,7 @@ public class TerminalGame extends JFrame {
     // MODIFIES: this
     // EFFECTS: removes an enemy from the graphicPanel
     public void removeEnemyGraphic() {
+        // make sure its not visible
         characterPanel.getComponent(0).setVisible(false);
         characterPanel.remove(0);
     }
