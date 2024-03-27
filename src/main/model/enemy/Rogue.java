@@ -2,6 +2,7 @@ package model.enemy;
 
 import model.items.Dagger;
 
+//creates a default rogue enemy
 public class Rogue extends Enemy {
     public Rogue() {
         super("Rogue", 5, 5, 5, new Dagger());

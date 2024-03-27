@@ -4,8 +4,7 @@ import model.Inventory;
 import model.Shop;
 import model.items.Item;
 
-import java.io.IOException;
-
+//creates a shopui class to manage and modify the shop
 public class ShopUI {
     private final Shop shop;
     private final Inventory inventory;
@@ -24,7 +23,7 @@ public class ShopUI {
     //MODIFIES: terminalGame, inventory
     //EFFECTS: swaps screen to options if cursor hovers exit, otherwise
     // adds a hovered item to inventory
-    public void executeShop(int option) throws IOException {
+    public void executeShop(int option) {
         if (option == shop.getShopList().size()) {
             terminalGame.swapScreen("Options");
         } else {

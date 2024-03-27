@@ -4,10 +4,9 @@ import model.Inventory;
 import model.Player;
 import model.enemy.*;
 
-import java.io.IOException;
 import java.util.Random;
 
-// Creates screen for attacking
+// Creates a class that manages all attacking mechanics and enemies
 public class AttackUI {
     private final EnemyList enemyList;
     private final Player player;
@@ -27,7 +26,7 @@ public class AttackUI {
 
     //MODIFIES: terminalGame
     //EFFECTS: exit if cursor hovers exit, otherwise attack the enemy hovered and show dialogue
-    public void executeAttack(int option) throws IOException {
+    public void executeAttack(int option) {
         if (option == enemyList.getCurrentEnemies().size()) {
             terminalGame.swapScreen("Options");
         } else {

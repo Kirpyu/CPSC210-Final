@@ -5,6 +5,7 @@ import model.items.ItemList;
 
 import java.util.ArrayList;
 
+// creates a shop class to hold and maintain items
 public class Shop {
     private final ArrayList<Item> shopList; // list of items displayed in store
     private final ItemList itemList; // list of items that exist

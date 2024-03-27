@@ -1,8 +1,8 @@
 package model.enemy;
 
-import model.items.Item;
 import model.items.Shield;
 
+//creates a default paladin enemy
 public class Paladin extends Enemy {
     public Paladin() {
         super("Paladin", 10,1,5, new Shield());

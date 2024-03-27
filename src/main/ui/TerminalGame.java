@@ -1,7 +1,5 @@
 package ui;
 
-
-
 import model.*;
 import model.enemy.EnemyList;
 import persistence.JsonReader;
@@ -45,13 +43,12 @@ public class TerminalGame extends JFrame {
     private JLabel hudHP;
 
     //panels
-    private JPanel graphicPanel; // this will be a card panel that changes depending on current screen
-    private JPanel textPanel;
-    private JPanel hudPanel;
+    private final JPanel graphicPanel; // this will be a card panel that changes depending on current screen
+    private final JPanel textPanel;
+    private final JPanel hudPanel;
     private GridBagConstraints constraints;
-    private JSplitPane splitPanel;
-    private JPanel moreTextPanel;
-    private JPanel mainPanel;
+    private final JPanel moreTextPanel;
+    private final JPanel mainPanel;
 
     //EFFECTS: Starts the game, shows current screen and creates list of options
     public TerminalGame() {
@@ -77,7 +74,6 @@ public class TerminalGame extends JFrame {
         hudPanel = new JPanel();
         textPanel = new JPanel();
         moreTextPanel = new JPanel();
-        splitPanel = new JSplitPane();
         constraints = new GridBagConstraints();
         mainPanel = new JPanel(new GridBagLayout());
 
@@ -106,6 +102,7 @@ public class TerminalGame extends JFrame {
         return null;
     }
 
+    // MODIFIES: this
     // EFFECTS: creates all options for the main menu
     private void initOptions() {
         listOfOptions.add("Attack");
@@ -116,6 +113,7 @@ public class TerminalGame extends JFrame {
         listOfOptions.add("Load");
     }
 
+    //MODIFIES: this
     //EFFECTS: creates graphic panel box and sets it to proper grid position
     private void createGraphicPanel() {
         constraints = new GridBagConstraints();
@@ -148,6 +146,8 @@ public class TerminalGame extends JFrame {
         mainPanel.add(hudPanel, constraints);
     }
 
+    //MODIFIES: this
+    //EFFECTS: updates the hud panel with the correct stats
     public void updateHudPanel() {
         hudHP.setText("HP: " + player.getCurrentHealth() + "/" + player.getMaxHealth());
     }
@@ -155,16 +155,32 @@ public class TerminalGame extends JFrame {
     //EFFECTS: creates text panel box and sets it to proper grid position
     private void createTextPanel() {
         constraints = new GridBagConstraints();
-        textPanel.setPreferredSize(new Dimension(600,150));
+        textPanel.setPreferredSize(new Dimension(400,150));
         textPanel.setBackground(Color.black);
         textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.PAGE_AXIS));
-        textPanel.setBorder(BorderFactory.createLineBorder(Color.white));
+        textPanel.setBorder(BorderFactory.createMatteBorder(1,1,1,0,Color.white));
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 0;
         constraints.gridy = 2;
-        constraints.gridwidth = 3;
+        constraints.gridwidth = 2;
 
         mainPanel.add(textPanel, constraints);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates second text panel box and sets it to proper grid position
+    private void createMoreTextPanel() {
+        constraints = new GridBagConstraints();
+        moreTextPanel.setPreferredSize(new Dimension(200,150));
+        moreTextPanel.setBackground(Color.black);
+        moreTextPanel.setLayout(new BoxLayout(moreTextPanel, BoxLayout.PAGE_AXIS));
+        moreTextPanel.setBorder(BorderFactory.createMatteBorder(1,0,1,1,Color.white));
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 2;
+        constraints.gridy = 2;
+        constraints.gridwidth = 1;
+
+        mainPanel.add(moreTextPanel, constraints);
     }
 
     // EFFECTS: creates all panels and adds them to mainpanel
@@ -172,10 +188,12 @@ public class TerminalGame extends JFrame {
         createGraphicPanel();
         createHudPanel();
         createTextPanel();
+        createMoreTextPanel();
     }
 
 
-    // EFFECTS: creates the frame and panels for the gmaes, then shows them
+    // MODIFIES: this
+    // EFFECTS: creates the frame and panels for the games, then shows them
     private void createAndShowGUI() {
         //Create and set up the window.
         JFrame frame = new JFrame("Game");
@@ -197,18 +215,22 @@ public class TerminalGame extends JFrame {
         frame.setVisible(true);
     }
 
+    //MODIFIES: this
+    //EFFECTS: removes and creates panels again in order to avoid overlapping
     private void refreshPanels() {
         textPanel.removeAll();
         graphicPanel.removeAll();
+        moreTextPanel.removeAll();
 
         createGraphicPanel();
+        createMoreTextPanel();
         updateHudPanel();
         createTextPanel();
     }
 
     // MODIFIES: this
     // EFFECTS: executes command given depending on the current page
-    public void executeCurrentScreen() throws IOException {
+    public void executeCurrentScreen() {
         switch (currentScreen) {
             case "Options":
                 executeOption();
@@ -231,41 +253,7 @@ public class TerminalGame extends JFrame {
         }
     }
 
-//    // REQUIRES: direction is either up or down
-//    // MODIFIES: this
-//    // EFFECTS: render depending on the direction of button pressed and
-//    // changes space bar key behavior depending on current screen
-//    public void render(String direction) throws IOException {
-//        screen.clear();
-//        switch (currentScreen) {
-//            case "Options":
-//                drawArrow(direction, listOfOptions);
-//                break;
-//
-//            case "Attack":
-//                drawArrow(direction, enemyList.getEnemyNames());
-//                drawMoreOptions(enemyList.getEnemiesStats());
-//                break;
-//
-//            case "Inventory":
-//                drawArrow(direction, inventory.getInventoryNames());
-//                drawMoreOptions(inventory.getInventoryLevels());
-//                break;
-//
-//            case "Shop":
-//                drawArrow(direction, shop.getShopListNames());
-//                drawMoreOptions(shop.getShopListCosts());
-//                break;
-//
-//            case "Stats":
-//                drawArrow(direction, player.getStats());
-//                break;
-//        }
-//
-//        drawDialogue(dialogue.displayDialogue());
-//        screen.refresh();
-//    }
-
+    // REQUIRES: dialogue is not empty
     // MODIFIES: this
     // EFFECTS: refreshes the screen with new lines
     public void refresh() {
@@ -276,20 +264,23 @@ public class TerminalGame extends JFrame {
 
             case "Attack":
                 drawArrow(enemyList.getEnemyNames());
+                drawMoreOptions(enemyList.getEnemiesStats());
                 break;
 
             case "Inventory":
                 drawArrow(inventory.getInventoryNames());
+                drawMoreOptions(inventory.getInventoryLevels());
                 break;
 
             case "Shop":
                 drawArrow(shop.getShopListNames());
+                drawMoreOptions(shop.getShopListCosts());
                 break;
 
             case "Stats":
                 drawArrow(player.getStats());
                 break;
-// must have at least one dialogue or button, else space bar won't be executed
+
             case "Dialogue":
                 drawArrow(dialogue.displayDialogue());
                 break;
@@ -338,13 +329,17 @@ public class TerminalGame extends JFrame {
         }
     }
 
-    //EFFECTS: draws the pointer next to options, then draws options afterwards
+    //REQUIRES: options.size() >= 0
+    //MODIFIES: this
+    //EFFECTS: draws the pointer next to options, then draws options afterward
     public void drawArrow(ArrayList<String> options) {
         drawOptions(options);
         JButton currentButton = (JButton) textPanel.getComponent(option);
         currentButton.requestFocus();
     }
 
+    //REQUIRES: options >= 0
+    //MODIFIES: this
     //EFFECTS: draws the pointer next to options depending on key pressed, then draws options afterwards
     public void drawArrow(KeyEvent e, ArrayList<String> options) throws IOException {
         switch (e.getKeyCode()) {
@@ -368,13 +363,14 @@ public class TerminalGame extends JFrame {
         }
     }
 
+    // EFFECTS: requests the focus of current button through the option field
     public void executeKey() {
         JButton currentButton = (JButton) textPanel.getComponent(option);
         currentButton.requestFocus();
     }
 
     // REQUIRES: option >= 0
-    // EFFECTS: displays all given options
+    // EFFECTS: displays all given options as buttons
     @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public void drawOptions(ArrayList<String> options) {
         refreshPanels();
@@ -415,6 +411,16 @@ public class TerminalGame extends JFrame {
 
             textPanel.add(button);
 
+        }
+    }
+
+    // EFFECTS: displays all extra options through labels
+    public void drawMoreOptions(ArrayList<String> options) {
+        for (String s : options) {
+            JLabel button = new JLabel(s);
+            button.setForeground(Color.white);
+            button.setFont(loadFont("PixelifySans-VariableFont_wght.ttf", 14f));
+            moreTextPanel.add(button);
         }
     }
 

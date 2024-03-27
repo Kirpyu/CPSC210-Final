@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+//creates an enemylist class that holds enemies
 public class EnemyList {
     private final ArrayList<Enemy> currentEnemies; // holds enemies currently in the wave
     private final ArrayList<String> listOfEnemies; // holds all enemies that exist

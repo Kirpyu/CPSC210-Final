@@ -6,7 +6,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-// keeps track of inventory
+// creates a class that keeps track of inventory
 public class Inventory {
     private int gold; // amount of gold in inventory
     private final ArrayList<Item> inventoryList; // keeps track of the inventory

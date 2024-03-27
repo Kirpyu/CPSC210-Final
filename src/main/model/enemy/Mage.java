@@ -2,6 +2,7 @@ package model.enemy;
 
 import model.items.Staff;
 
+//creates a default mage enemy
 public class Mage extends Enemy {
     public Mage() {
         super("Mage", 5, 5, 5, new Staff());

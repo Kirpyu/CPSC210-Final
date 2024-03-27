@@ -2,6 +2,7 @@ package model.enemy;
 
 import model.items.Sword;
 
+//creates a default warrior enemy
 public class Warrior extends Enemy {
     public Warrior() {
         super("Warrior", 10,2,5, new Sword());

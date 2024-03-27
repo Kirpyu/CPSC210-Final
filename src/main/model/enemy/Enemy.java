@@ -3,6 +3,7 @@ package model.enemy;
 import model.items.Item;
 import org.json.JSONObject;
 
+//creates an abstract class for enemies that will be created, containing all needed statistics for combat
 public abstract class Enemy {
     protected String name;
     protected int health;

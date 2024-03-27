@@ -2,8 +2,7 @@ package ui;
 
 import model.Inventory;
 
-import java.io.IOException;
-
+//creates an inventory class to maintain and manage inventory
 public class InventoryUI {
     private final Inventory inventory;
     private final TerminalGame terminalGame;

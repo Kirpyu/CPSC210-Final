@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+// creates a player class with all needed statistics
 public class Player {
     private final int maxHealth;
     private int currentHealth;

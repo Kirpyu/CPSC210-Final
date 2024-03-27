@@ -1,8 +1,8 @@
 package model.enemy;
 
 import model.items.Axe;
-import model.items.Shield;
 
+// creates a default berserker enemy
 public class Berserker extends Enemy {
     public Berserker() {
         super("Berserker", 5,3,5, new Axe());

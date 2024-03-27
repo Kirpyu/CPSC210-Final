@@ -6,6 +6,7 @@ import model.enemy.EnemyList;
 
 import java.util.ArrayList;
 
+//creates class to create and maintain dialogues
 public class Dialogue {
     EnemyList enemyList;
     Player player;
