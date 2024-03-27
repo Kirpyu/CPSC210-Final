@@ -9,13 +9,10 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 
@@ -131,10 +128,10 @@ public class TerminalGame extends JFrame {
         constraints.gridwidth = 3;
         mainPanel.add(graphicPanel, constraints);
 
-        characterPanel.setBackground(Color.white);
-        characterPanel.setLayout(new BoxLayout(characterPanel, BoxLayout.X_AXIS));
-        graphicPanel.add(characterPanel, BorderLayout.PAGE_END);
+        characterPanel.setBackground(Color.black);
+        characterPanel.setLayout(new FlowLayout());
 
+        graphicPanel.add(characterPanel, BorderLayout.SOUTH);
     }
 
     //MODIFIES: this
@@ -200,6 +197,7 @@ public class TerminalGame extends JFrame {
         ImageIcon imageIcon = new ImageIcon(new ImageIcon(this.getClass().getResource(path))
                 .getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT));
         JLabel picLabel = new JLabel(imageIcon);
+        picLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         characterPanel.add(picLabel);
 
@@ -217,6 +215,7 @@ public class TerminalGame extends JFrame {
     // MODIFIES: this
     // EFFECTS: removes an enemy from the graphicPanel
     public void removeEnemyGraphic() {
+        characterPanel.getComponent(0).setVisible(false);
         characterPanel.remove(0);
     }
 
@@ -247,7 +246,6 @@ public class TerminalGame extends JFrame {
     //EFFECTS: removes and creates panels again in order to avoid overlapping
     public void refreshPanels() {
         textPanel.removeAll();
-
         moreTextPanel.removeAll();
 
         createMoreTextPanel();

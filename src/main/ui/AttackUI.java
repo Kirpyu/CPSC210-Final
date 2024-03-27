@@ -88,10 +88,10 @@ public class AttackUI {
 
     //REQUIRES: amount > 0
     //MODIFIES: this
-    //EFFECTS: instantiates a certain amount of random enemies
+    //EFFECTS: instantiates a certain amount of random enemies and adds enemy image
     public void createEnemies(int amount) {
         for (int i = amount; i > 0; i--) {
-            terminalGame.createImage("/img/knight.png");
+            terminalGame.createImage("/img/cat.png");
             Random random = new Random();
             String randomEnemy = enemyList.getListOfEnemies().get(random.nextInt(5));
 
