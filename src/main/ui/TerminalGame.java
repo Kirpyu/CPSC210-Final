@@ -9,10 +9,13 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 
@@ -49,6 +52,7 @@ public class TerminalGame extends JFrame {
     private GridBagConstraints constraints;
     private final JPanel moreTextPanel;
     private final JPanel mainPanel;
+    private final JPanel characterPanel;
 
     //EFFECTS: Starts the game, shows current screen and creates list of options
     public TerminalGame() {
@@ -74,6 +78,7 @@ public class TerminalGame extends JFrame {
         hudPanel = new JPanel();
         textPanel = new JPanel();
         moreTextPanel = new JPanel();
+        characterPanel = new JPanel();
         constraints = new GridBagConstraints();
         mainPanel = new JPanel(new GridBagLayout());
 
@@ -104,7 +109,7 @@ public class TerminalGame extends JFrame {
 
     // MODIFIES: this
     // EFFECTS: creates all options for the main menu
-    private void initOptions() {
+    public void initOptions() {
         listOfOptions.add("Attack");
         listOfOptions.add("Inventory");
         listOfOptions.add("Shop");
@@ -115,20 +120,26 @@ public class TerminalGame extends JFrame {
 
     //MODIFIES: this
     //EFFECTS: creates graphic panel box and sets it to proper grid position
-    private void createGraphicPanel() {
+    public void createGraphicPanel() {
         constraints = new GridBagConstraints();
         graphicPanel.setPreferredSize(new Dimension(600,300));
         graphicPanel.setBackground(Color.black);
-        graphicPanel.setLayout(new BoxLayout(graphicPanel, BoxLayout.PAGE_AXIS));
+        graphicPanel.setLayout(new BorderLayout());
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 0;
         constraints.gridy = 1;
         constraints.gridwidth = 3;
-
         mainPanel.add(graphicPanel, constraints);
+
+        characterPanel.setBackground(Color.white);
+        characterPanel.setLayout(new BoxLayout(characterPanel, BoxLayout.X_AXIS));
+        graphicPanel.add(characterPanel, BorderLayout.PAGE_END);
+
     }
 
-    private void createHudPanel() {
+    //MODIFIES: this
+    //EFFECTS: creates hud panel box and sets it to proper grid position
+    public void createHudPanel() {
         constraints = new GridBagConstraints();
         hudPanel.setPreferredSize(new Dimension(600,50));
         hudPanel.setBackground(Color.black);
@@ -140,7 +151,7 @@ public class TerminalGame extends JFrame {
 
         hudHP = new JLabel("HP: " + player.getCurrentHealth() + "/" + player.getMaxHealth());
         hudHP.setForeground(Color.white);
-        hudHP.setFont(loadFont("PixelifySans-Bold.ttf", 24f));
+        hudHP.setFont(loadFont("/fonts/PixelifySans-Bold.ttf", 24f));
         hudPanel.add(hudHP);
 
         mainPanel.add(hudPanel, constraints);
@@ -153,7 +164,7 @@ public class TerminalGame extends JFrame {
     }
 
     //EFFECTS: creates text panel box and sets it to proper grid position
-    private void createTextPanel() {
+    public void createTextPanel() {
         constraints = new GridBagConstraints();
         textPanel.setPreferredSize(new Dimension(400,150));
         textPanel.setBackground(Color.black);
@@ -169,7 +180,7 @@ public class TerminalGame extends JFrame {
 
     //MODIFIES: this
     //EFFECTS: creates second text panel box and sets it to proper grid position
-    private void createMoreTextPanel() {
+    public void createMoreTextPanel() {
         constraints = new GridBagConstraints();
         moreTextPanel.setPreferredSize(new Dimension(200,150));
         moreTextPanel.setBackground(Color.black);
@@ -183,18 +194,35 @@ public class TerminalGame extends JFrame {
         mainPanel.add(moreTextPanel, constraints);
     }
 
+    //EFFECTS: creates a picture using the given file path, then adds it to the graphic panel
+    public void createImage(String path) {
+
+        ImageIcon imageIcon = new ImageIcon(new ImageIcon(this.getClass().getResource(path))
+                .getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT));
+        JLabel picLabel = new JLabel(imageIcon);
+
+        characterPanel.add(picLabel);
+
+    }
+
+
     // EFFECTS: creates all panels and adds them to mainpanel
-    private void addComponentsToPane() {
+    public void addComponentsToPane() {
         createGraphicPanel();
         createHudPanel();
         createTextPanel();
         createMoreTextPanel();
     }
 
+    // MODIFIES: this
+    // EFFECTS: removes an enemy from the graphicPanel
+    public void removeEnemyGraphic() {
+        characterPanel.remove(0);
+    }
 
     // MODIFIES: this
     // EFFECTS: creates the frame and panels for the games, then shows them
-    private void createAndShowGUI() {
+    public void createAndShowGUI() {
         //Create and set up the window.
         JFrame frame = new JFrame("Game");
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -217,12 +245,11 @@ public class TerminalGame extends JFrame {
 
     //MODIFIES: this
     //EFFECTS: removes and creates panels again in order to avoid overlapping
-    private void refreshPanels() {
+    public void refreshPanels() {
         textPanel.removeAll();
-        graphicPanel.removeAll();
+
         moreTextPanel.removeAll();
 
-        createGraphicPanel();
         createMoreTextPanel();
         updateHudPanel();
         createTextPanel();
@@ -382,7 +409,7 @@ public class TerminalGame extends JFrame {
             button.setBackground(Color.black);
             button.setBorder(BorderFactory.createLineBorder(Color.black));
             button.setOpaque(true);
-            button.setFont(loadFont("PixelifySans-VariableFont_wght.ttf", 14f));
+            button.setFont(loadFont("/fonts/PixelifySans-VariableFont_wght.ttf", 14f));
 
             button.addKeyListener(new KeyAdapter() {
                 @Override
@@ -419,13 +446,13 @@ public class TerminalGame extends JFrame {
         for (String s : options) {
             JLabel button = new JLabel(s);
             button.setForeground(Color.white);
-            button.setFont(loadFont("PixelifySans-VariableFont_wght.ttf", 14f));
+            button.setFont(loadFont("/fonts/PixelifySans-VariableFont_wght.ttf", 14f));
             moreTextPanel.add(button);
         }
     }
 
     //EFFECTS: saves inventory, enemylist, and player to the jSon file
-    private void save() {
+    public void save() {
         try {
             jsonWriter.open();
             jsonWriter.write(inventory, enemyList, player);
@@ -442,7 +469,7 @@ public class TerminalGame extends JFrame {
 
     // MODIFIES: this
     // EFFECTS: loads all objects from save file
-    private void load() {
+    public void load() {
         try {
             this.inventory = jsonReader.readInventory(inventory);
             this.enemyList = jsonReader.readEnemyList(enemyList);

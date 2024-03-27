@@ -27,6 +27,7 @@ public class AttackUI {
     //MODIFIES: terminalGame
     //EFFECTS: exit if cursor hovers exit, otherwise attack the enemy hovered and show dialogue
     public void executeAttack(int option) {
+
         if (option == enemyList.getCurrentEnemies().size()) {
             terminalGame.swapScreen("Options");
         } else {
@@ -50,6 +51,7 @@ public class AttackUI {
         if (targetEnemy.dead()) {
             dialogue.addDialogue(targetEnemy.deathLine());
             enemyList.removeEnemy(targetEnemy);
+            terminalGame.removeEnemyGraphic();
             inventory.addGold(targetEnemy.getGoldDropped());
             inventory.addInventory(targetEnemy.getItemDropped());
             dialogue.addDialogue("You gained " + targetEnemy.getGoldDropped() + "G");
@@ -89,6 +91,7 @@ public class AttackUI {
     //EFFECTS: instantiates a certain amount of random enemies
     public void createEnemies(int amount) {
         for (int i = amount; i > 0; i--) {
+            terminalGame.createImage("/img/knight.png");
             Random random = new Random();
             String randomEnemy = enemyList.getListOfEnemies().get(random.nextInt(5));
 
