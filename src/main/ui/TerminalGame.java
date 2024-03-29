@@ -233,7 +233,6 @@ public class TerminalGame extends JFrame {
         frame.add(mainPanel);
 
         //Set up the content pane.
-        drawOptions(listOfOptions);
         addComponentsToPane();
 
         //Display the window.
