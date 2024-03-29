@@ -72,9 +72,17 @@ public class Player {
     public JSONArray statsToJson() {
         JSONArray jsonArray = new JSONArray();
 
-        JSONObject jsonHealth = new JSONObject();
-        jsonHealth.put("health", currentHealth);
-        jsonArray.put(jsonHealth);
+        JSONObject json = new JSONObject();
+        json.put("health", currentHealth);
+
+
+        if (getEquippedItem() != null) {
+            JSONArray item = new JSONArray();
+            item.put(equippedItem.toJson());
+            json.put("item", item);
+        }
+
+        jsonArray.put(json);
 
         return jsonArray;
     }

@@ -66,6 +66,7 @@ public class JsonWriterTest extends JsonTest {
             assertEquals(enemyList, e.getEnemyNames());
             assertEquals(itemList, i.getInventory());
             assertEquals(20, p.getCurrentHealth());
+            assertEquals(null, p.getEquippedItem());
             assertEquals(0, i.getGold());
 
         } catch (IOException e) {
@@ -88,6 +89,8 @@ public class JsonWriterTest extends JsonTest {
         itemList.add(dagger);
 
         p.setCurrentHealth(15);
+        p.setEquippedItem(axe);
+
         i.setGold(5);
 
         try {
@@ -110,6 +113,7 @@ public class JsonWriterTest extends JsonTest {
             checkGold(5, i);
 
             assertEquals(15, p.getCurrentHealth());
+            checkInventory(axe.getItemName(), axe.getLevel(), axe.getAbilityName(), axe.getDamage(), p.getEquippedItem());
             checkPlayer(15, p);
 
         } catch (IOException e) {

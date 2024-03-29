@@ -66,6 +66,7 @@ public class JsonReaderTest extends JsonTest {
             assertEquals(enemyList, e.getEnemyNames());
             assertEquals(itemList, i.getInventory());
             assertEquals(20, p.getCurrentHealth());
+            assertEquals(null, p.getEquippedItem());
             assertEquals(0, i.getGold());
 
         } catch (IOException e) {
@@ -88,6 +89,7 @@ public class JsonReaderTest extends JsonTest {
         itemList.add(dagger);
 
         p.setCurrentHealth(15);
+        p.setEquippedItem(dagger);
         i.setGold(5);
 
         try {
@@ -109,6 +111,7 @@ public class JsonReaderTest extends JsonTest {
             checkInventory(dagger.getItemName(), dagger.getLevel(), dagger.getAbilityName(), dagger.getDamage(), i.getInventory().get(1));
             checkGold(5, i);
 
+            checkInventory(dagger.getItemName(), dagger.getLevel(), dagger.getAbilityName(), dagger.getDamage(), p.getEquippedItem());
             assertEquals(15, p.getCurrentHealth());
             checkPlayer(15, p);
 

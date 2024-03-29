@@ -5,6 +5,7 @@ import model.Player;
 import model.enemy.EnemyList;
 import model.items.Item;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -145,7 +146,28 @@ public class JsonReader {
     //EFFECTS: parses players stats from JSON object and adds them to player
     private void addStats(Player p, JSONObject jsonObject) {
         int currentHP = jsonObject.getInt("health");
+        try {
+            JSONArray equippedItem = jsonObject.getJSONArray("item");
+
+            for (Object json: equippedItem) {
+                JSONObject item = (JSONObject) json;
+                addEquippedItem(p, item);
+            }
+        } catch (JSONException e) {
+            // no item
+        }
+
 
         p.setCurrentHealth(currentHP);
+    }
+
+    private void addEquippedItem(Player p, JSONObject jsonObject) {
+        String name = jsonObject.getString("name");
+        String ability = jsonObject.getString("ability");
+        int level = jsonObject.getInt("level");
+        int damage = jsonObject.getInt("damage");
+
+        Item item = new Item(name, ability, level, damage);
+        p.setEquippedItem(item);
     }
 }
