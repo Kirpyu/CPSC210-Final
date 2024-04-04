@@ -24,6 +24,7 @@ public class Inventory {
 
         if (!getInventoryNames().contains(item.getItemName())) {
             inventoryList.add(item);
+            EventLog.getInstance().logEvent(new Event("Added " + item.getItemName() + " to inventory."));
         } else {
             addItemLevel(item);
         }

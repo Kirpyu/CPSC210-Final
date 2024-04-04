@@ -111,6 +111,7 @@ public class Player {
     //setter
     public void setEquippedItem(Item equippedItem) {
         this.equippedItem = equippedItem;
+        EventLog.getInstance().logEvent(new Event("Player equipped " + equippedItem.getItemName()));
     }
 
     public void setAttack(int attack) {

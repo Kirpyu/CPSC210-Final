@@ -1,20 +1,19 @@
 package ui;
 
 import model.*;
+import model.Event;
 import model.enemy.EnemyList;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.*;
+import java.util.Iterator;
 
 //RPG Game
 public class TerminalGame extends JFrame {
@@ -22,7 +21,7 @@ public class TerminalGame extends JFrame {
     private String currentScreen; // holds a string for what the current screen is
     private int option; // determines where the cursor or > is
 
-//    private int waveNumber; // determines the numbers of waves that has passed
+    //    private int waveNumber; // determines the numbers of waves that has passed
     private final ArrayList<String> listOfOptions; // determines list of options in options screen
     private final Shop shop; // holds a shop for players to purchase items in
     private Player player; // holds the main player
@@ -41,6 +40,9 @@ public class TerminalGame extends JFrame {
 
     //hud
     private JLabel hudHP;
+
+    //frame
+    private final JFrame frame;
 
     //panels
     private final JPanel graphicPanel; // this will be a card panel that changes depending on current screen
@@ -76,6 +78,9 @@ public class TerminalGame extends JFrame {
         textPanel = new JPanel();
         moreTextPanel = new JPanel();
         characterPanel = new JPanel();
+
+        frame = new JFrame("Game");
+
         constraints = new GridBagConstraints();
         mainPanel = new JPanel(new GridBagLayout());
 
@@ -210,6 +215,18 @@ public class TerminalGame extends JFrame {
         createHudPanel();
         createTextPanel();
         createMoreTextPanel();
+
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                Iterator<Event> event = EventLog.getInstance().iterator();
+                while (event.hasNext()) {
+                    System.out.println(event.next().getDescription());
+                    event.remove();
+                }
+            }
+        });
     }
 
     // MODIFIES: this
@@ -224,7 +241,6 @@ public class TerminalGame extends JFrame {
     // EFFECTS: creates the frame and panels for the games, then shows them
     public void createAndShowGUI() {
         //Create and set up the window.
-        JFrame frame = new JFrame("Game");
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(800, 600));
         frame.setResizable(false);

@@ -1,16 +1,29 @@
 {"save": [
     {
         "gold": 0,
-        "inventory": []
+        "inventory": [
+            {
+                "damage": 3,
+                "level": 1,
+                "name": "Axe",
+                "ability": "Cleave"
+            },
+            {
+                "damage": 5,
+                "level": 1,
+                "name": "Dagger",
+                "ability": "Stab"
+            }
+        ]
     },
     {"enemies": [
         {
-            "name": "Warrior",
-            "health": 10
+            "name": "Berserker",
+            "health": 5
         },
         {
-            "name": "Paladin",
-            "health": 10
+            "name": "Berserker",
+            "health": 5
         }
     ]},
     {"player": [{"health": 20}]}
