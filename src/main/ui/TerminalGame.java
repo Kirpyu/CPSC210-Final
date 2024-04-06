@@ -63,7 +63,7 @@ public class TerminalGame extends JFrame {
         inventory = new Inventory();
         enemyList = new EnemyList();
 
-        dialogue = new Dialogue(player, enemyList);
+        dialogue = new Dialogue(enemyList);
         inventoryUI = new InventoryUI(player, inventory, this);
         shopUI = new ShopUI(shop, inventory, dialogue, this);
         attackUI = new AttackUI(player, enemyList, inventory, dialogue, this);

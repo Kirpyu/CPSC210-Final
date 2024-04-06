@@ -1,6 +1,5 @@
 package ui;
 
-import model.Player;
 import model.enemy.Enemy;
 import model.enemy.EnemyList;
 
@@ -8,14 +7,12 @@ import java.util.ArrayList;
 
 //creates class to create and maintain dialogues
 public class Dialogue {
-    EnemyList enemyList;
-    Player player;
-    ArrayList<String> displayedDialogue; // holds dialogue in the screen
-    ArrayList<String> currentDialogue; // holds accumulated dialogue that's backlogged
+    private final EnemyList enemyList;
+    private ArrayList<String> displayedDialogue; // holds dialogue in the screen
+    private ArrayList<String> currentDialogue; // holds accumulated dialogue that's backlogged
 
     //creates a dialogue box responsible for in game dialogue
-    public Dialogue(Player player, EnemyList enemyList) {
-        this.player = player;
+    public Dialogue(EnemyList enemyList) {
         this.enemyList = enemyList;
         currentDialogue = new ArrayList<>();
         displayedDialogue = new ArrayList<>();
