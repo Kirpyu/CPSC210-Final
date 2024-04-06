@@ -26,5 +26,14 @@ whether I intend to pursue game development/ similar projects.
 
 Side Note: You are able to navigate the game either throw arrow keys and space bar or clicking on the options
 
+## **Phase 4: Task 2**
+Shop -> Purchase Axe -> Shop -> Purchase Dagger -> Inventory -> Equip Axe -> Equip Dagger
+
+Console Log
+- Added Axe to inventory.
+- Added Dagger to inventory.
+- Player equipped Axe
+- Player equipped Dagger
+
 ## **JSON**
 Referenced from: https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
