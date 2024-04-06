@@ -35,5 +35,17 @@ Console Log
 - Player equipped Axe
 - Player equipped Dagger
 
+## **Phase 4: Task 3**
+
+One change I noticed I would make is creating an Entity abstract class for both the Player and Enemy. This would allow
+me to go less back and forth between the common properties between Player and Enemy in my code, such as taking damage, 
+attacking people, taking their attack damage, etc. These two classes are almost the same with only a few exceptions, 
+which is how an abstract class would definitely come in handy. 
+
+Another change I would make is dividing the TerminalGame class or making it shorter. The class
+is quite long and hard to navigate, which may be a bit bothersome in the future. Some ways I may approach this may be
+creating more classes or creating new methods for commonly repeated code. 
+
+
 ## **JSON**
 Referenced from: https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
