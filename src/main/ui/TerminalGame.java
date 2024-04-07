@@ -222,7 +222,7 @@ public class TerminalGame extends JFrame {
                 super.windowClosing(e);
                 Iterator<Event> event = EventLog.getInstance().iterator();
                 while (event.hasNext()) {
-                    System.out.println(event.next().getDescription());
+                    System.out.println(event.next().toString());
                     event.remove();
                 }
             }

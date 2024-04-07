@@ -29,10 +29,15 @@ Side Note: You are able to navigate the game either throw arrow keys and space b
 ## **Phase 4: Task 2**
 Shop -> Purchase Axe -> Shop -> Purchase Dagger -> Inventory -> Equip Axe -> Equip Dagger
 
-Console Log
+Console Log:
+
+- Sun Apr 07 15:27:43 PDT 2024
 - Added Axe to inventory.
+- Sun Apr 07 15:27:45 PDT 2024
 - Added Dagger to inventory.
+- Sun Apr 07 15:27:46 PDT 2024
 - Player equipped Axe
+- Sun Apr 07 15:27:46 PDT 2024
 - Player equipped Dagger
 
 ## **Phase 4: Task 3**
